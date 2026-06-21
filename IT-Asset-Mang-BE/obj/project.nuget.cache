@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "HVroxE7/gqs=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Spiva\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.8\\microsoft.aspnetcore.openapi.10.0.8.nupkg.sha512",
+    "C:\\Users\\Spiva\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
