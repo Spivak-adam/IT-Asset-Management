@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<IT_Asset_Service>();
+builder.Services.AddScoped<ItAssetService>();
 
 var app = builder.Build();
 
