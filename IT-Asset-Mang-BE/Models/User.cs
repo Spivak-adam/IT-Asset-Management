@@ -1,3 +1,5 @@
+namespace IT_Asset.Models;
+
 public class User
 {
     public int Id { get; set; }
