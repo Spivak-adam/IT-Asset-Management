@@ -1,3 +1,5 @@
+namespace IT_Asset.Enums;
+
 public enum AssetCondition
 {
     New = 1,

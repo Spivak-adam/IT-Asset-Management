@@ -1,3 +1,5 @@
+namespace IT_Asset.Enums;
+
 public enum AssetStatus
 {
     Available = 1,

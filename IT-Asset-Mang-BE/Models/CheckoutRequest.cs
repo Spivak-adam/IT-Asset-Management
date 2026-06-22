@@ -1,3 +1,5 @@
+using IT_Asset.Enums;
+
 namespace IT_Asset.Models;
 
 public class CheckoutRequest

@@ -1,5 +1,7 @@
 using IT_Asset.Models;
 using IT_Asset.Data;
+using IT_Asset.Enums;
+using IT_Asset.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace IT_Asset.Services;
@@ -12,11 +14,29 @@ public class ItAssetService
     {
         _context = context;
     }
-    
-    public async Task Register(string email, string password)
+
+    public async Task Register(RegisterDto request)
     {
-        var hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
-        await _context.Users.AddAsync(new User { Email = email, PasswordHash = hashPassword });
+        var existingUser = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+        if (existingUser != null)
+        {
+            throw new Exception("A user with this email already exists.");
+        }
+
+        var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+        var user = new User
+        {
+            Email = request.Email,
+            PasswordHash = hashPassword,
+            CreatedAt = DateTime.UtcNow,
+            Role = request.Role,
+            IsActive = true
+        };
+
+        await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
     }
 
@@ -27,17 +47,17 @@ public class ItAssetService
 
     public async Task Logout()
     {
-        
+
     }
 
     public async Task CheckoutRequest(int assetID)
     {
-        
+
     }
 
     public async Task updateRequest(int requestID)
     {
-        
+
     }
 
     public async Task<List<Asset>> GetAllAssets()

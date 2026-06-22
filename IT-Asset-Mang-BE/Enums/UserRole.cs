@@ -1,3 +1,5 @@
+namespace IT_Asset.Enums;
+
 public enum UserRole
 {
     Employee = 1,
