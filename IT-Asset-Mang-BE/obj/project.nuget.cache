@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bX5i0q6H+vk=",
+  "dgSpecHash": "GhLW58FNttg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
+  "projectFilePath": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Spiva\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Spiva\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
