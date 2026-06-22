@@ -38,6 +38,15 @@
           }
         }
       },
+      "BCrypt.Net-Next/4.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/BCrypt-Net-Next.dll": {}
+        },
+        "runtime": {
+          "lib/net10.0/BCrypt-Net-Next.dll": {}
+        }
+      },
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
@@ -1115,6 +1124,31 @@
         "lib/net8.0/Azure.Identity.xml",
         "lib/netstandard2.0/Azure.Identity.dll",
         "lib/netstandard2.0/Azure.Identity.xml"
+      ]
+    },
+    "BCrypt.Net-Next/4.2.0": {
+      "sha512": "gwLD2KfCuwQesP17aVh4h6lpiMPEVt5Lbpndo0ej903hNUUTtyxt3ARdDjmuydBRTAUICc7OVKVbaOvc6SQYXA==",
+      "type": "package",
+      "path": "bcrypt.net-next/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bcrypt.net-next.4.2.0.nupkg.sha512",
+        "bcrypt.net-next.nuspec",
+        "ico.png",
+        "lib/net10.0/BCrypt-Net-Next.dll",
+        "lib/net10.0/BCrypt.Net-Next.xml",
+        "lib/net462/BCrypt-Net-Next.dll",
+        "lib/net462/BCrypt.Net-Next.xml",
+        "lib/net472/BCrypt-Net-Next.dll",
+        "lib/net472/BCrypt.Net-Next.xml",
+        "lib/net48/BCrypt-Net-Next.dll",
+        "lib/net48/BCrypt.Net-Next.xml",
+        "lib/netstandard2.0/BCrypt-Net-Next.dll",
+        "lib/netstandard2.0/BCrypt.Net-Next.xml",
+        "lib/netstandard2.1/BCrypt-Net-Next.dll",
+        "lib/netstandard2.1/BCrypt.Net-Next.xml",
+        "readme.md"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -3146,6 +3180,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "BCrypt.Net-Next >= 4.2.0",
       "Microsoft.AspNetCore.OpenApi >= 10.0.8",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.9",
       "Microsoft.EntityFrameworkCore.InMemory >= 10.0.9",
@@ -3158,11 +3193,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
+      "projectUniqueName": "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
       "projectName": "IT-Asset-Mang-BE",
-      "projectPath": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
+      "projectPath": "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
       "packagesPath": "C:\\Users\\Spiva\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\obj\\",
+      "outputPath": "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Spiva\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -3197,6 +3232,10 @@
         "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
+          "BCrypt.Net-Next": {
+            "target": "Package",
+            "version": "[4.2.0, )"
+          },
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[10.0.8, )"
