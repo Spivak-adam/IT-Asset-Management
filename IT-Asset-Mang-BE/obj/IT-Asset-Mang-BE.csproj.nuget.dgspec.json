@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj": {}
+    "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj": {
+    "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
+        "projectUniqueName": "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
         "projectName": "IT-Asset-Mang-BE",
-        "projectPath": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
+        "projectPath": "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\IT-Asset-Mang-BE.csproj",
         "packagesPath": "C:\\Users\\Spiva\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Spiva\\repos\\IT-Asset-Management\\IT-Asset-Mang-BE\\obj\\",
+        "outputPath": "C:\\Users\\Spiva\\Repositories\\IT-Asset-Management\\IT-Asset-Mang-BE\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Spiva\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -46,6 +46,10 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.8, )"
