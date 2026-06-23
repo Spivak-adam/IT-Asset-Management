@@ -17,14 +17,14 @@ public class ItAssetController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("register")]
+    [HttpPost("auth/register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto request)
     {
         await _service.Register(request);
         return Ok("User registered successfully.");
     }
 
-    [HttpPost("login")]
+    [HttpPost("auth/login")]
     public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
         await _service.Login(request.Email, request.Password);
