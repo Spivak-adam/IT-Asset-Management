@@ -40,10 +40,30 @@ public class ItAssetService
         await _context.SaveChangesAsync();
     }
 
-    public async Task Login(string email, string Password)
+    public async Task<LoginResponseDto?> Login(string email, string password)
+{
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Email == email);
+
+    if (user == null)
     {
-        await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.PasswordHash == Password);
+        return null;
     }
+
+    var passwordValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+
+    if (!passwordValid)
+    {
+        return null;
+    }
+
+    return new LoginResponseDto
+    {
+        Token = "temporary-token",
+        Email = user.Email,
+        Role = user.Role.ToString()
+    };
+}
 
     public async Task Logout()
     {

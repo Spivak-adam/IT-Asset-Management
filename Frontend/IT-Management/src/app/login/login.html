@@ -1,19 +1,19 @@
-<div style="display: flex; justify-content: column;">
-    <div>
-        <h2>Login</h2>
-        <form (ngSubmit)="onLogin()">
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    <div>
-        <img src="assets/images/threatlocker-logo.png" alt="ThreatLocker Logo">
-    </div>
+<div class="login-container">
+  <div class="login-form">
+    <h2>Login</h2>
+    <form (ngSubmit)="onLogin()">
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" [(ngModel)]="email" required />
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <div class="login-image">
+    <img src="assets/images/threatlocker-logo.png" alt="ThreatLocker Logo" />
+  </div>
 </div>

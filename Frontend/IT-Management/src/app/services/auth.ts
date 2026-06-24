@@ -23,7 +23,7 @@ export interface LoginResponseDto {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:5001/api';
+  private apiUrl = 'http://localhost:5058/api/ITAsset';
 
   constructor(private http: HttpClient) {}
 
