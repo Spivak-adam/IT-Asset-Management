@@ -12,6 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
@@ -25,6 +26,12 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ItAssetService>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbSeeder.SeedAsync(context);
+}
 
 app.MapControllers();
 

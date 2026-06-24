@@ -1,0 +1,35 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  margin: 0;
+}  
+
+.login-form {
+  display: flex;
+  flex: 1;
+  background-color: #0d2091;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  flex-direction: column;
+  color: #ffffff;
+  max-width: 400px;
+  margin: 0;
+}
+
+.login-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  min-height: 100vh; 
+  margin: 0 auto;
+  flex: 1;
+}
+
+img{
+    width: 40%;
+    height: auto;
+}
