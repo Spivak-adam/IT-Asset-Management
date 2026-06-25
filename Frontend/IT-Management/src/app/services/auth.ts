@@ -14,13 +14,14 @@ export interface LoginDto {
 }
 
 export interface LoginResponseDto {
+  id: number;
   token: string;
   email: string;
   role: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:5058/api/ITAsset';
@@ -36,6 +37,7 @@ export class AuthService {
   }
 
   saveSession(response: LoginResponseDto) {
+    localStorage.setItem('id', response.id.toString());
     localStorage.setItem('token', response.token);
     localStorage.setItem('role', response.role);
     localStorage.setItem('email', response.email);
@@ -55,5 +57,9 @@ export class AuthService {
 
   isLoggedIn() {
     return !!this.getToken();
+  }
+
+  getUserId(): number {
+    return Number(localStorage.getItem('id'));
   }
 }

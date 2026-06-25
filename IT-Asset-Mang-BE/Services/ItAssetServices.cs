@@ -41,38 +41,71 @@ public class ItAssetService
     }
 
     public async Task<LoginResponseDto?> Login(string email, string password)
-{
-    var user = await _context.Users
-        .FirstOrDefaultAsync(u => u.Email == email);
-
-    if (user == null)
     {
-        return null;
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        var validPassword = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+
+        if (!validPassword)
+        {
+            return null;
+        }
+
+        var token = Guid.NewGuid().ToString();
+
+        return new LoginResponseDto
+        {
+            Id = user.Id,
+            Token = token,
+            Email = user.Email,
+            Role = user.Role.ToString()
+        };
     }
-
-    var passwordValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
-
-    if (!passwordValid)
-    {
-        return null;
-    }
-
-    return new LoginResponseDto
-    {
-        Token = "temporary-token",
-        Email = user.Email,
-        Role = user.Role.ToString()
-    };
-}
 
     public async Task Logout()
     {
 
     }
 
-    public async Task CheckoutRequest(int assetID)
-    {
 
+    public async Task<CheckoutRequest> CreateCheckoutRequest(CreateCheckoutRequestDto request)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == request.RequestedByUserId && u.IsActive);
+
+        if (user == null)
+        {
+            throw new Exception("User not found or inactive.");
+        }
+
+        var checkoutRequest = new CheckoutRequest
+        {
+            RequestedByUserId = request.RequestedByUserId,
+            AssetCategory = request.AssetCategory,
+            Reason = request.Reason,
+            Status = CheckoutRequestStatus.Pending,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        await _context.CheckoutRequests.AddAsync(checkoutRequest);
+        await _context.SaveChangesAsync();
+
+        return checkoutRequest;
+    }
+
+    public async Task<List<AssetHistory>> GetAssetHistory(int assetId)
+    {
+        return await _context.AssetHistory
+            .Where(h => h.AssetId == assetId)
+            .OrderByDescending(h => h.CreatedAt)
+            .ToListAsync();
     }
 
     public async Task updateRequest(int requestID)

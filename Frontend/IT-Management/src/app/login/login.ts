@@ -26,6 +26,7 @@ export class Login {
 
     this.authService.login(loginDto).subscribe({
       next: (response) => {
+        console.log('Login successful', response);
         this.authService.saveSession(response);
         this.router.navigate(['/dashboard']);
       },

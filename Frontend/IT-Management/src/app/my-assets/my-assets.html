@@ -1,1 +1,102 @@
-<p>my-assets works!</p>
+<h2>My Assets</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Serial Number</th>
+      <th>Status</th>
+      <th>Condition</th>
+      <th>Assigned To User ID</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th>Is Archived</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (asset of assets; track asset.id) {
+      <tr>
+        <td>{{ asset.name }}</td>
+        <td>{{ asset.category }}</td>
+        <td>{{ asset.serialNumber }}</td>
+        <td>{{ asset.status }}</td>
+        <td>{{ asset.condition }}</td>
+        <td>{{ asset.assignedToUserId }}</td>
+        <td>{{ asset.createdAt }}</td>
+        <td>{{ asset.updatedAt }}</td>
+        <td>{{ asset.isArchived }}</td>
+        <td>
+          <button type="button" (click)="openStatusDrawer(asset)">
+            View Status
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (drawerOpen) {
+  <div class="drawer-backdrop" (click)="closeDrawer()"></div>
+
+  <aside class="asset-drawer">
+    <button class="close-button" type="button" (click)="closeDrawer()">×</button>
+
+    @if (selectedAsset) {
+      <h2>{{ selectedAsset.name }}</h2>
+      <p><strong>Asset Tag:</strong> {{ selectedAsset.assetTag }}</p>
+      <p><strong>Category:</strong> {{ selectedAsset.category }}</p>
+      <p><strong>Serial Number:</strong> {{ selectedAsset.serialNumber }}</p>
+      <p><strong>Status:</strong> {{ selectedAsset.status }}</p>
+      <p><strong>Condition:</strong> {{ selectedAsset.condition }}</p>
+
+      <hr />
+
+      <h3>Asset History</h3>
+
+      @if (assetHistory.length > 0) {
+        <ul>
+          @for (history of assetHistory; track history.id) {
+            <li>
+              <strong>{{ history.action }}</strong>
+              <br />
+              Old: {{ history.oldValue || 'N/A' }}
+              <br />
+              New: {{ history.newValue || 'N/A' }}
+              <br />
+              <small>{{ history.createdAt }}</small>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p>No history found.</p>
+      }
+
+      <hr />
+
+      <h3>Request Checkout</h3>
+
+      <label for="reason">Reason</label>
+      <textarea
+        id="reason"
+        name="reason"
+        [(ngModel)]="requestReason"
+        placeholder="Why do you need this asset?"
+      ></textarea>
+
+      <button type="button" (click)="requestCheckout()">
+        Request Checkout
+      </button>
+
+      @if (successMessage) {
+        <p class="success">{{ successMessage }}</p>
+      }
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+    }
+  </aside>
+}
