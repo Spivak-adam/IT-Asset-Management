@@ -37,29 +37,38 @@ export class AuthService {
   }
 
   saveSession(response: LoginResponseDto) {
-    localStorage.setItem('id', response.id.toString());
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('role', response.role);
-    localStorage.setItem('email', response.email);
-  }
+  if (typeof window === 'undefined') return;
 
-  logout() {
-    localStorage.clear();
-  }
+  localStorage.setItem('id', response.id.toString());
+  localStorage.setItem('token', response.token);
+  localStorage.setItem('role', response.role);
+  localStorage.setItem('email', response.email);
+}
 
-  getToken() {
-    return localStorage.getItem('token');
-  }
+logout() {
+  if (typeof window === 'undefined') return;
+  localStorage.clear();
+}
 
-  getRole() {
-    return localStorage.getItem('role');
-  }
+getToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('token');
+}
 
-  isLoggedIn() {
-    return !!this.getToken();
-  }
+getRole(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('role');
+}
 
+isLoggedIn(): boolean {
+  return !!this.getToken();
+}
   getUserId(): number {
-    return Number(localStorage.getItem('id'));
+  if (typeof window === 'undefined') {
+    return 0;
   }
+
+  const id = localStorage.getItem('id');
+  return id ? Number(id) : 0;
+}
 }

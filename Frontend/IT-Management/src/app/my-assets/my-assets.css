@@ -63,3 +63,107 @@ textarea {
 .error {
   color: red;
 }
+
+.popup-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 200;
+}
+
+.history-popup {
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 900px;
+    max-width: 95vw;
+
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    z-index: 201;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+.popup-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.close-button{
+
+    font-size:24px;
+    border:none;
+    background:none;
+    cursor:pointer;
+}
+
+.history-table{
+
+    width:100%;
+    border-collapse:collapse;
+}
+
+.history-table th,
+.history-table td{
+
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:left;
+}
+
+.history-table th{
+
+    background:#f4f4f4;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: #555;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.header-actions button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #0d2091;
+  color: white;
+}
+
+.header-actions button:hover {
+  background: #07145c;
+}

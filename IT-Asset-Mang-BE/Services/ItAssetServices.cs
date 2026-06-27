@@ -74,7 +74,7 @@ public class ItAssetService
     }
 
 
-    public async Task<CheckoutRequest> CreateCheckoutRequest(CreateCheckoutRequestDto request)
+    public async Task<CheckoutRequestDto> CheckoutRequest(CreateCheckoutRequestDto request)
     {
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Id == request.RequestedByUserId && u.IsActive);
@@ -84,20 +84,58 @@ public class ItAssetService
             throw new Exception("User not found or inactive.");
         }
 
+        var asset = await _context.Assets
+        .FirstOrDefaultAsync(a => a.Id == request.RequestedAssetId);
+
+        if (asset == null)
+        {
+            throw new Exception("Asset not found.");
+        }
+
+        if (asset.Status != AssetStatus.Available)
+        {
+            throw new Exception("Asset is not available for checkout.");
+        }
+
         var checkoutRequest = new CheckoutRequest
         {
             RequestedByUserId = request.RequestedByUserId,
+            RequestedAssetId = request.RequestedAssetId,
             AssetCategory = request.AssetCategory,
             Reason = request.Reason,
             Status = CheckoutRequestStatus.Pending,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
-
         await _context.CheckoutRequests.AddAsync(checkoutRequest);
+        await _context.Assets
+            .Where(a => a.Id == request.RequestedAssetId)
+            .ExecuteUpdateAsync(setters => 
+            setters.SetProperty(a => a.Status, AssetStatus.Pending));
+        await _context.Assets
+            .Where(a => a.Id == request.RequestedAssetId)
+            .ExecuteUpdateAsync(setters => 
+            setters.SetProperty(a => a.UpdatedAt, DateTime.UtcNow));
+        
         await _context.SaveChangesAsync();
 
-        return checkoutRequest;
+        return new CheckoutRequestDto
+        {
+            Id = checkoutRequest.Id,
+            RequestedByUserId = checkoutRequest.RequestedByUserId,
+            RequestedAssetId = checkoutRequest.RequestedAssetId,
+            AssetCategory = checkoutRequest.AssetCategory,
+            Reason = checkoutRequest.Reason,
+            Status = checkoutRequest.Status,
+            ReviewedByUserId = checkoutRequest.ReviewedByUserId,
+            AssignedAssetId = checkoutRequest.AssignedAssetId,
+            ApprovedAt = checkoutRequest.ApprovedAt,
+            RejectedAt = checkoutRequest.RejectedAt,
+            FulfilledAt = checkoutRequest.FulfilledAt,
+            ReturnedAt = checkoutRequest.ReturnedAt,
+            CreatedAt = checkoutRequest.CreatedAt,
+            UpdatedAt = checkoutRequest.UpdatedAt
+        };
     }
 
     public async Task<List<AssetHistory>> GetAssetHistory(int assetId)

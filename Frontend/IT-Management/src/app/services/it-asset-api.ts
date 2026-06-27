@@ -4,6 +4,7 @@ import { Asset, AssetHistory, CheckoutRequest } from '../models/it-asset.models'
 
 export interface CreateCheckoutRequestDto {
   requestedByUserId: number;
+  requestedAssetId: number;
   assetCategory: string;
   reason: string;
 }

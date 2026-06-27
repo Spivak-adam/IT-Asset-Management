@@ -38,10 +38,9 @@ public class ItAssetController : ControllerBase
     }
 
     [HttpPost("checkout-requests")]
-    public async Task<IActionResult> CreateCheckoutRequest([FromBody] CreateCheckoutRequestDto request)
+    public async Task<IActionResult> CheckoutRequest([FromBody] CreateCheckoutRequestDto request)
     {
-        var checkoutRequest = await _service.CreateCheckoutRequest(request);
-
+        var checkoutRequest = await _service.CheckoutRequest(request);
         return Ok(checkoutRequest);
     }
 
