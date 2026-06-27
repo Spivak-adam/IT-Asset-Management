@@ -32,5 +32,9 @@ export class ITAssetApi {
     );
   }
 
+  getCheckoutRequests() {
+  return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests`);
+}
+
   
 }

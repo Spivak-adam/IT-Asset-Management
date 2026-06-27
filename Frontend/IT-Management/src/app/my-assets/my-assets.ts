@@ -2,10 +2,11 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Asset, AssetHistory } from '../models/it-asset.models';
-import { ITAssetApi, CreateCheckoutRequestDto } from '../services/it-asset-api';
+import { ITAssetApi } from '../services/it-asset-api';
 import { AuthService } from '../services/auth';
 import { AssetStatus, AssetCondition } from '../models/it-asset.models';
 import { Checkout } from '../checkout/checkout';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-assets',
@@ -31,13 +32,22 @@ export class MyAssets implements OnInit {
   constructor(
     private api: ITAssetApi,
     private authService: AuthService,
+  private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
   ) {}
 
-  viewMode: 'my-assets' | 'check-assets' = 'my-assets';
+  viewMode: 'my-assets' | 'checkout' = 'my-assets';
 
 ngOnInit() {
-  this.loadMyAssets();
+  this.route.queryParams.subscribe(params => {
+    const view = params['view'];
+
+    if (view === 'checkout') {
+      this.loadCheckAssets();
+    } else {
+      this.loadMyAssets();
+    }
+  });
 }
 
 loadMyAssets() {
@@ -63,7 +73,7 @@ loadCheckAssets() {
         asset.isArchived === false
       );
 
-      this.viewMode = 'check-assets';
+      this.viewMode = 'checkout';
       this.cdr.detectChanges();
     },
     error: (error) => {
