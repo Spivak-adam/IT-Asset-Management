@@ -21,20 +21,23 @@ export class ITAssetApi {
     return this.http.get<Asset[]>(`${this.apiUrl}/assets`);
   }
 
-   getAssetHistory(assetId: number) {
+  getAssetHistory(assetId: number) {
     return this.http.get<AssetHistory[]>(`${this.apiUrl}/assets/${assetId}/history`);
   }
 
   createCheckoutRequest(request: CreateCheckoutRequestDto) {
-    return this.http.post<CheckoutRequest>(
-      `${this.apiUrl}/checkout-requests`,
-      request
-    );
+    return this.http.post<CheckoutRequest>(`${this.apiUrl}/checkout-requests`, request);
   }
 
   getCheckoutRequests() {
-  return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests`);
-}
+    return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests`);
+  }
 
-  
+  approveCheckoutRequest(id: number) {
+    return this.http.patch<CheckoutRequest>(`${this.apiUrl}/checkout-requests/${id}/approve`, {});
+  }
+
+  rejectCheckoutRequest(id: number) {
+    return this.http.patch<CheckoutRequest>(`${this.apiUrl}/checkout-requests/${id}/reject`, {});
+  }
 }

@@ -110,13 +110,13 @@ public class ItAssetService
         await _context.CheckoutRequests.AddAsync(checkoutRequest);
         await _context.Assets
             .Where(a => a.Id == request.RequestedAssetId)
-            .ExecuteUpdateAsync(setters => 
+            .ExecuteUpdateAsync(setters =>
             setters.SetProperty(a => a.Status, AssetStatus.Pending));
         await _context.Assets
             .Where(a => a.Id == request.RequestedAssetId)
-            .ExecuteUpdateAsync(setters => 
+            .ExecuteUpdateAsync(setters =>
             setters.SetProperty(a => a.UpdatedAt, DateTime.UtcNow));
-        
+
         await _context.SaveChangesAsync();
 
         return new CheckoutRequestDto
@@ -146,13 +146,128 @@ public class ItAssetService
             .ToListAsync();
     }
 
-    public async Task updateRequest(int requestID)
-    {
-
-    }
-
     public async Task<List<Asset>> GetAllAssets()
     {
         return await _context.Assets.ToListAsync();
+    }
+
+    public async Task<List<CheckoutRequestDto>> GetCheckoutRequests()
+    {
+        return await _context.CheckoutRequests
+            .OrderByDescending(r => r.CreatedAt)
+            .Select(r => new CheckoutRequestDto
+            {
+                Id = r.Id,
+                RequestedByUserId = r.RequestedByUserId,
+                RequestedAssetId = r.RequestedAssetId,
+                AssetCategory = r.AssetCategory,
+                Reason = r.Reason,
+                Status = r.Status,
+                ReviewedByUserId = r.ReviewedByUserId,
+                AssignedAssetId = r.AssignedAssetId,
+                ApprovedAt = r.ApprovedAt,
+                RejectedAt = r.RejectedAt,
+                FulfilledAt = r.FulfilledAt,
+                ReturnedAt = r.ReturnedAt,
+                CreatedAt = r.CreatedAt,
+                UpdatedAt = r.UpdatedAt
+            })
+            .ToListAsync();
+    }
+
+    public async Task<CheckoutRequestDto> ApproveCheckoutRequest(int id)
+    {
+        var request = await _context.CheckoutRequests.FindAsync(id);
+
+        if (request == null)
+        {
+            throw new Exception("Checkout request not found.");
+        }
+
+        if (request.Status != CheckoutRequestStatus.Pending)
+        {
+            throw new Exception("Only pending requests can be approved.");
+        }
+
+        request.Status = CheckoutRequestStatus.Approved;
+        request.ApprovedAt = DateTime.UtcNow;
+        request.UpdatedAt = DateTime.UtcNow;
+
+        await _context.Assets
+            .Where(a => a.Id == request.RequestedAssetId)
+            .ExecuteUpdateAsync(setters =>
+            setters.SetProperty(a => a.Status, AssetStatus.Assigned));
+        await _context.Assets
+            .Where(a => a.Id == request.RequestedAssetId)
+            .ExecuteUpdateAsync(setters =>
+            setters.SetProperty(a => a.UpdatedAt, DateTime.UtcNow));
+
+        await _context.SaveChangesAsync();
+
+        return new CheckoutRequestDto
+        {
+            Id = request.Id,
+            RequestedByUserId = request.RequestedByUserId,
+            RequestedAssetId = request.RequestedAssetId,
+            AssetCategory = request.AssetCategory,
+            Reason = request.Reason,
+            Status = request.Status,
+            ReviewedByUserId = request.ReviewedByUserId,
+            AssignedAssetId = request.AssignedAssetId,
+            ApprovedAt = request.ApprovedAt,
+            RejectedAt = request.RejectedAt,
+            FulfilledAt = request.FulfilledAt,
+            ReturnedAt = request.ReturnedAt,
+            CreatedAt = request.CreatedAt,
+            UpdatedAt = request.UpdatedAt
+        };
+    }
+
+    public async Task<CheckoutRequestDto> RejectCheckoutRequest(int id)
+    {
+        var request = await _context.CheckoutRequests.FindAsync(id);
+
+        if (request == null)
+        {
+            throw new Exception("Checkout request not found.");
+        }
+
+        if (request.Status != CheckoutRequestStatus.Pending)
+        {
+            throw new Exception("Only pending requests can be rejected.");
+        }
+
+        request.Status = CheckoutRequestStatus.Rejected;
+        request.RejectedAt = DateTime.UtcNow;
+        request.UpdatedAt = DateTime.UtcNow;
+
+        await _context.Assets
+            .Where(a => a.Id == request.RequestedAssetId)
+            .ExecuteUpdateAsync(setters =>
+            setters.SetProperty(a => a.Status, AssetStatus.Available));
+        await _context.Assets
+            .Where(a => a.Id == request.RequestedAssetId)
+            .ExecuteUpdateAsync(setters =>
+            setters.SetProperty(a => a.UpdatedAt, DateTime.UtcNow));
+
+        await _context.SaveChangesAsync();
+
+        return new CheckoutRequestDto
+        {
+            Id = request.Id,
+            RequestedByUserId = request.RequestedByUserId,
+            RequestedAssetId = request.RequestedAssetId,
+            AssetCategory = request.AssetCategory,
+            Reason = request.Reason,
+            Status = request.Status,
+            ReviewedByUserId = request.ReviewedByUserId,
+            AssignedAssetId = request.AssignedAssetId,
+            ApprovedAt = request.ApprovedAt,
+            RejectedAt = request.RejectedAt,
+            FulfilledAt = request.FulfilledAt,
+            ReturnedAt = request.ReturnedAt,
+            CreatedAt = request.CreatedAt,
+            UpdatedAt = request.UpdatedAt
+        };
     }
 }

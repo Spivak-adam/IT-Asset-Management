@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { Login } from './login/login';
 import { Dashboard } from './dashboard/dashboard';
-import { MyAssets } from './my-assets/my-assets'
+import { MyAssets } from './my-assets/my-assets';
+import { ReviewRequests } from './review-requests/review-requests';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -13,7 +14,7 @@ export const routes: Routes = [
   //{ path: 'my-requests', component: MyRequests },
 
   { path: 'assets', component: MyAssets },
-  //{ path: 'review-requests', component: ReviewRequests },
+  { path: 'review-requests', component: ReviewRequests },
   //{ path: 'users', component: UserManagement },
   //{ path: 'returns', component: ReviewRequests },
   //{ path: 'reports', component: Dashboard },

@@ -37,11 +37,32 @@ public class ItAssetController : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("checkout-requests")]
+    public async Task<IActionResult> GetCheckoutRequests()
+    {
+        var requests = await _service.GetCheckoutRequests();
+        return Ok(requests);
+    }
+
     [HttpPost("checkout-requests")]
     public async Task<IActionResult> CheckoutRequest([FromBody] CreateCheckoutRequestDto request)
     {
         var checkoutRequest = await _service.CheckoutRequest(request);
         return Ok(checkoutRequest);
+    }
+
+    [HttpPatch("checkout-requests/{id}/approve")]
+    public async Task<IActionResult> ApproveCheckoutRequest(int id)
+    {
+        var response = await _service.ApproveCheckoutRequest(id);
+        return Ok(response);
+    }
+
+    [HttpPatch("checkout-requests/{id}/reject")]
+    public async Task<IActionResult> RejectCheckoutRequest(int id)
+    {
+        var response = await _service.RejectCheckoutRequest(id);
+        return Ok(response);
     }
 
     [HttpGet("assets/{assetId}/history")]
@@ -52,12 +73,7 @@ public class ItAssetController : ControllerBase
         return Ok(history);
     }
 
-    [HttpPost("update-request")]
-    public async Task<IActionResult> UpdateRequest(int requestID)
-    {
-        await _service.updateRequest(requestID);
-        return Ok();
-    }
+    
 
     [HttpGet("assets")]
     public async Task<IActionResult> GetAllAssets()
