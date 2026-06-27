@@ -19,6 +19,8 @@ public static class DbSeeder
         {
             Email = "admin@test.com",
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("Password123!"),
+            FirstName = "System",
+            LastName = "Administrator",
             Role = UserRole.Admin,
             IsActive = true,
             CreatedAt = DateTime.UtcNow
@@ -28,6 +30,8 @@ public static class DbSeeder
         {
             Email = "manager@test.com",
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("Password123!"),
+            FirstName = "Danny",
+            LastName = "Jenkins",
             Role = UserRole.AssetManager,
             IsActive = true,
             CreatedAt = DateTime.UtcNow
@@ -37,6 +41,8 @@ public static class DbSeeder
         {
             Email = "employee@test.com",
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("Password123!"),
+            FirstName = "Adam",
+            LastName = "Spivak",
             Role = UserRole.Employee,
             IsActive = true,
             CreatedAt = DateTime.UtcNow

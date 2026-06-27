@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Asset, CheckoutRequest } from '../models/it-asset.models';
+import { Asset, AssetHistory, CheckoutRequest } from '../models/it-asset.models';
+
+export interface CreateCheckoutRequestDto {
+  requestedByUserId: number;
+  requestedAssetId: number;
+  assetCategory: string;
+  reason: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +21,20 @@ export class ITAssetApi {
     return this.http.get<Asset[]>(`${this.apiUrl}/assets`);
   }
 
-  getCheckoutRequests() {
-    return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests`);
+   getAssetHistory(assetId: number) {
+    return this.http.get<AssetHistory[]>(`${this.apiUrl}/assets/${assetId}/history`);
   }
+
+  createCheckoutRequest(request: CreateCheckoutRequestDto) {
+    return this.http.post<CheckoutRequest>(
+      `${this.apiUrl}/checkout-requests`,
+      request
+    );
+  }
+
+  getCheckoutRequests() {
+  return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests`);
+}
 
   
 }
