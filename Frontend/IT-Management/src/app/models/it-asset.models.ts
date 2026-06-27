@@ -9,6 +9,7 @@ export enum AssetStatus {
   Assigned = 2,
   Maintenance = 3,
   Retired = 4,
+  Pending = 5,
 }
 
 export enum AssetCondition {
@@ -54,6 +55,7 @@ export interface Asset {
 export interface CheckoutRequest {
   id: number;
   requestedByUserId: number;
+  requestedAssetId?: number | null;
   assetCategory: string;
   reason: string;
   status: CheckoutRequestStatus;

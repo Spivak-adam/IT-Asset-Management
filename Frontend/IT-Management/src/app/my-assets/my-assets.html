@@ -1,1 +1,118 @@
-<p>my-assets works!</p>
+<div class="page-header">
+  <div>
+    <h2>
+      @if (viewMode === 'my-assets') {
+        My Assets
+      } @else {
+        Checkout Assets
+      }
+    </h2>
+
+    <p>
+      @if (viewMode === 'my-assets') {
+        These are the assets currently assigned to you.
+      } @else {
+        These are available assets you can request for checkout.
+      }
+    </p>
+  </div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Serial Number</th>
+      <th>Status</th>
+      <th>Condition</th>
+      <th>Assigned To User ID</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th>Is Archived</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (asset of assets; track asset.id) {
+      <tr>
+        <td>{{ asset.name }}</td>
+        <td>{{ asset.category }}</td>
+        <td>{{ asset.serialNumber }}</td>
+        <td>{{ AssetStatus[asset.status] }}</td>
+        <td>{{ AssetCondition[asset.condition] }}</td>
+        <td>{{ asset.assignedToUserId }}</td>
+        <td>{{ asset.createdAt | date: 'short' : 'UTC' }}</td>
+        <td>{{ asset.updatedAt | date: 'short' : 'UTC' }}</td>
+        <td>{{ asset.isArchived }}</td>
+        <td>
+          <button type="button" (click)="openStatusDrawer(asset)">View Status</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (drawerOpen) {
+  <div class="drawer-backdrop" (click)="closeDrawer()"></div>
+
+  <aside class="asset-drawer">
+    <button class="close-button" type="button" (click)="closeDrawer()">×</button>
+
+    @if (selectedAsset) {
+      <h2>{{ selectedAsset.name }}</h2>
+      <p><strong>Asset Tag:</strong> {{ selectedAsset.assetTag }}</p>
+      <p><strong>Category:</strong> {{ selectedAsset.category }}</p>
+      <p><strong>Serial Number:</strong> {{ selectedAsset.serialNumber }}</p>
+      <p><strong>Status:</strong> {{ AssetStatus[selectedAsset.status] }}</p>
+      <p><strong>Condition:</strong> {{ AssetCondition[selectedAsset.condition] }}</p>
+
+      <hr />
+
+      <h3>Asset History</h3>
+
+      <p>{{ assetHistory.length }} history records.</p>
+
+      <button type="button" (click)="openHistoryPopup()">View Full History</button>
+
+      <hr />
+
+      <app-checkout [selectedAsset]="selectedAsset"></app-checkout>
+    }
+  </aside>
+}
+
+@if (historyPopupOpen) {
+  <div class="popup-backdrop" (click)="closeHistoryPopup()"></div>
+
+  <div class="history-popup">
+    <div class="popup-header">
+      <h2>Asset History</h2>
+
+      <button class="close-button" (click)="closeHistoryPopup()">✕</button>
+    </div>
+
+    @if (assetHistory.length > 0) {
+      <table class="history-table">
+        <tr>
+          <th>Date</th>
+          <th>Action</th>
+          <th>Old Value</th>
+          <th>New Value</th>
+        </tr>
+
+        @for (history of assetHistory; track history.id) {
+          <tr>
+            <td>{{ history.createdAt | date: 'short' : 'UTC' }}</td>
+            <td>{{ history.action }}</td>
+            <td>{{ history.oldValue || 'N/A' }}</td>
+            <td>{{ history.newValue || 'N/A' }}</td>
+          </tr>
+        }
+      </table>
+    } @else {
+      <p>No history available.</p>
+    }
+  </div>
+}

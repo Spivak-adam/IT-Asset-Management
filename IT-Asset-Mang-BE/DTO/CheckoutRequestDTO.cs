@@ -1,14 +1,13 @@
 using IT_Asset.Enums;
 
-namespace IT_Asset.Models;
+namespace IT_Asset.DTOs;
 
-public class CheckoutRequest
+public class CheckoutRequestDto
 {
     public int Id { get; set; }
 
     public int RequestedByUserId { get; set; }
 
-    public User RequestedByUser { get; set; }
     public int? RequestedAssetId { get; set; }
 
     public string AssetCategory { get; set; } = string.Empty;
@@ -19,11 +18,7 @@ public class CheckoutRequest
 
     public int? ReviewedByUserId { get; set; }
 
-    public User? ReviewedByUser { get; set; }
-
     public int? AssignedAssetId { get; set; }
-
-    public Asset? AssignedAsset { get; set; }
 
     public DateTime? ApprovedAt { get; set; }
 

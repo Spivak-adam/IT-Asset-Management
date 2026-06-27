@@ -5,5 +5,6 @@ public enum AssetStatus
     Available = 1,
     Assigned = 2,
     Maintenance = 3,
-    Retired = 4
+    Retired = 4,
+    Pending = 5
 }

@@ -31,17 +31,25 @@ public class ItAssetController : ControllerBase
 
         if (response == null)
         {
-            return Unauthorized("Invalid email or password");
+            return Unauthorized("Invalid email or password.");
         }
 
         return Ok(response);
     }
 
-    [HttpPost("checkout")]
-    public async Task<IActionResult> CheckoutRequest(int assetID)
+    [HttpPost("checkout-requests")]
+    public async Task<IActionResult> CheckoutRequest([FromBody] CreateCheckoutRequestDto request)
     {
-        await _service.CheckoutRequest(assetID);
-        return Ok();
+        var checkoutRequest = await _service.CheckoutRequest(request);
+        return Ok(checkoutRequest);
+    }
+
+    [HttpGet("assets/{assetId}/history")]
+    public async Task<IActionResult> GetAssetHistory(int assetId)
+    {
+        var history = await _service.GetAssetHistory(assetId);
+
+        return Ok(history);
     }
 
     [HttpPost("update-request")]

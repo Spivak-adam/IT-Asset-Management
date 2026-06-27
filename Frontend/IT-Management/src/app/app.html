@@ -1,1 +1,33 @@
-<router-outlet></router-outlet>
+@if (isLoggedIn()) {
+  <div class="app-layout">
+    <aside class="sidebar">
+      <h2>IT Assets</h2>
+
+      <nav>
+        @for (item of menuItems; track item.route) {
+          <a
+            [routerLink]="item.route"
+            [queryParams]="item.queryParams"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{
+              paths: 'exact',
+              queryParams: 'exact',
+              fragment: 'ignored',
+              matrixParams: 'ignored',
+            }"
+          >
+            {{ item.label }}
+          </a>
+        }
+      </nav>
+
+      <button class="logout-button" type="button" (click)="logout()">Logout</button>
+    </aside>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}
