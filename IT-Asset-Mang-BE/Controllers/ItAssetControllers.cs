@@ -73,12 +73,16 @@ public class ItAssetController : ControllerBase
         return Ok(history);
     }
 
-    
-
     [HttpGet("assets")]
     public async Task<IActionResult> GetAllAssets()
     {
         var assets = await _service.GetAllAssets();
         return Ok(assets);
+    }
+
+    [HttpGet("my-assets/{userId}")]
+    public async Task<IActionResult> GetMyAssets(int userId)
+    {
+        return Ok(await _service.GetMyAssets(userId));
     }
 }

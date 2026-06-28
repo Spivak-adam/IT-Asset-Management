@@ -1,0 +1,31 @@
+<h2>Asset Inventory</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Asset Tag</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Status</th>
+      <th>Condition</th>
+      <th>Assigned User</th>
+      <th>Updated</th>
+      <th>Archived</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (asset of assets; track asset.id) {
+      <tr>
+        <td>{{ asset.assetTag }}</td>
+        <td>{{ asset.name }}</td>
+        <td>{{ asset.category }}</td>
+        <td>{{ AssetStatus[asset.status] }}</td>
+        <td>{{ AssetCondition[asset.condition] }}</td>
+        <td>{{ asset.assignedToUserId ?? 'Unassigned' }}</td>
+        <td>{{ asset.updatedAt | date:'short':'UTC' }}</td>
+        <td>{{ asset.isArchived ? 'Yes' : 'No' }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

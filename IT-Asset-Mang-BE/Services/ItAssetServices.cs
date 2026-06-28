@@ -73,6 +73,23 @@ public class ItAssetService
 
     }
 
+    private async Task AddAssetHistory(
+        int assetId,
+        int? userId,
+        string action,
+        string? oldValue,
+        string? newValue)
+    {
+        await _context.AssetHistory.AddAsync(new AssetHistory
+        {
+            AssetId = assetId,
+            UserId = userId,
+            Action = action,
+            OldValue = oldValue,
+            NewValue = newValue,
+            CreatedAt = DateTime.UtcNow
+        });
+    }
 
     public async Task<CheckoutRequestDto> CheckoutRequest(CreateCheckoutRequestDto request)
     {
@@ -108,10 +125,25 @@ public class ItAssetService
             UpdatedAt = DateTime.UtcNow
         };
         await _context.CheckoutRequests.AddAsync(checkoutRequest);
+
+        await _context.AssetHistory.AddAsync(new AssetHistory
+        {
+            AssetId = asset.Id,
+            UserId = request.RequestedByUserId,
+            Action = "Checkout Rejected",
+            OldValue = CheckoutRequestStatus.Pending.ToString(),
+            NewValue = CheckoutRequestStatus.Rejected.ToString(),
+            CreatedAt = DateTime.UtcNow
+        });
+
+
+        // Update the asset status to Pending
         await _context.Assets
             .Where(a => a.Id == request.RequestedAssetId)
             .ExecuteUpdateAsync(setters =>
             setters.SetProperty(a => a.Status, AssetStatus.Pending));
+
+        // Update the asset's updated at timestamp
         await _context.Assets
             .Where(a => a.Id == request.RequestedAssetId)
             .ExecuteUpdateAsync(setters =>
@@ -149,6 +181,27 @@ public class ItAssetService
     public async Task<List<Asset>> GetAllAssets()
     {
         return await _context.Assets.ToListAsync();
+    }
+
+    public async Task<List<AssetDto>> GetMyAssets(int userId)
+    {
+        return await _context.Assets
+            .Where(a => a.AssignedToUserId == userId && !a.IsArchived)
+            .Select(a => new AssetDto
+            {
+                Id = a.Id,
+                AssetTag = a.AssetTag,
+                Name = a.Name,
+                Category = a.Category,
+                SerialNumber = a.SerialNumber,
+                Status = a.Status,
+                Condition = a.Condition,
+                AssignedToUserId = a.AssignedToUserId,
+                CreatedAt = a.CreatedAt,
+                UpdatedAt = a.UpdatedAt,
+                IsArchived = a.IsArchived
+            })
+            .ToListAsync();
     }
 
     public async Task<List<CheckoutRequestDto>> GetCheckoutRequests()
@@ -189,18 +242,55 @@ public class ItAssetService
             throw new Exception("Only pending requests can be approved.");
         }
 
+        if (request.RequestedAssetId == null)
+        {
+            throw new Exception("Requested asset not found on checkout request.");
+        }
+
+        var asset = await _context.Assets
+            .FirstOrDefaultAsync(a => a.Id == request.RequestedAssetId);
+
+        if (asset == null)
+        {
+            throw new Exception("Asset not found.");
+        }
+
+        if (asset.Status != AssetStatus.Pending)
+        {
+            throw new Exception("Asset is not available.");
+        }
+
+        var oldStatus = asset.Status.ToString();
+        var oldAssignedUser = asset.AssignedToUserId?.ToString() ?? "Unassigned";
+
         request.Status = CheckoutRequestStatus.Approved;
         request.ApprovedAt = DateTime.UtcNow;
+        request.AssignedAssetId = asset.Id;
         request.UpdatedAt = DateTime.UtcNow;
 
-        await _context.Assets
-            .Where(a => a.Id == request.RequestedAssetId)
-            .ExecuteUpdateAsync(setters =>
-            setters.SetProperty(a => a.Status, AssetStatus.Assigned));
-        await _context.Assets
-            .Where(a => a.Id == request.RequestedAssetId)
-            .ExecuteUpdateAsync(setters =>
-            setters.SetProperty(a => a.UpdatedAt, DateTime.UtcNow));
+        asset.Status = AssetStatus.Assigned;
+        asset.AssignedToUserId = request.RequestedByUserId;
+        asset.UpdatedAt = DateTime.UtcNow;
+
+        await _context.AssetHistory.AddAsync(new AssetHistory
+        {
+            AssetId = asset.Id,
+            UserId = request.RequestedByUserId,
+            Action = "Checkout Approved",
+            OldValue = oldStatus,
+            NewValue = AssetStatus.Assigned.ToString(),
+            CreatedAt = DateTime.UtcNow
+        });
+
+        await _context.AssetHistory.AddAsync(new AssetHistory
+        {
+            AssetId = asset.Id,
+            UserId = request.RequestedByUserId,
+            Action = "Asset Assigned",
+            OldValue = oldAssignedUser,
+            NewValue = request.RequestedByUserId.ToString(),
+            CreatedAt = DateTime.UtcNow
+        });
 
         await _context.SaveChangesAsync();
 
@@ -237,18 +327,32 @@ public class ItAssetService
             throw new Exception("Only pending requests can be rejected.");
         }
 
+        if (request.RequestedAssetId == null)
+        {
+            throw new Exception("Requested asset not found on checkout request.");
+        }
+
+        var asset = await _context.Assets
+            .FirstOrDefaultAsync(a => a.Id == request.RequestedAssetId);
+
+        if (asset == null)
+        {
+            throw new Exception("Asset not found.");
+        }
+
         request.Status = CheckoutRequestStatus.Rejected;
         request.RejectedAt = DateTime.UtcNow;
         request.UpdatedAt = DateTime.UtcNow;
 
-        await _context.Assets
-            .Where(a => a.Id == request.RequestedAssetId)
-            .ExecuteUpdateAsync(setters =>
-            setters.SetProperty(a => a.Status, AssetStatus.Available));
-        await _context.Assets
-            .Where(a => a.Id == request.RequestedAssetId)
-            .ExecuteUpdateAsync(setters =>
-            setters.SetProperty(a => a.UpdatedAt, DateTime.UtcNow));
+        await _context.AssetHistory.AddAsync(new AssetHistory
+        {
+            AssetId = asset.Id,
+            UserId = request.RequestedByUserId,
+            Action = "Checkout Rejected",
+            OldValue = CheckoutRequestStatus.Pending.ToString(),
+            NewValue = CheckoutRequestStatus.Rejected.ToString(),
+            CreatedAt = DateTime.UtcNow
+        });
 
         await _context.SaveChangesAsync();
 

@@ -21,6 +21,10 @@ export class ITAssetApi {
     return this.http.get<Asset[]>(`${this.apiUrl}/assets`);
   }
 
+  getMyAssets(userId: number) {
+    return this.http.get<Asset[]>(`${this.apiUrl}/my-assets/${userId}`);
+  }
+
   getAssetHistory(assetId: number) {
     return this.http.get<AssetHistory[]>(`${this.apiUrl}/assets/${assetId}/history`);
   }
