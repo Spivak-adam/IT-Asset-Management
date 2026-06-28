@@ -374,4 +374,29 @@ public class ItAssetService
             UpdatedAt = request.UpdatedAt
         };
     }
+
+    public async Task<List<CheckoutRequestDto>> GetMyCheckoutRequests(int userId)
+    {
+        return await _context.CheckoutRequests
+            .Where(r => r.RequestedByUserId == userId)
+            .OrderByDescending(r => r.CreatedAt)
+            .Select(r => new CheckoutRequestDto
+            {
+                Id = r.Id,
+                RequestedByUserId = r.RequestedByUserId,
+                RequestedAssetId = r.RequestedAssetId,
+                AssetCategory = r.AssetCategory,
+                Reason = r.Reason,
+                Status = r.Status,
+                ReviewedByUserId = r.ReviewedByUserId,
+                AssignedAssetId = r.AssignedAssetId,
+                ApprovedAt = r.ApprovedAt,
+                RejectedAt = r.RejectedAt,
+                FulfilledAt = r.FulfilledAt,
+                ReturnedAt = r.ReturnedAt,
+                CreatedAt = r.CreatedAt,
+                UpdatedAt = r.UpdatedAt
+            })
+            .ToListAsync();
+    }
 }

@@ -44,4 +44,8 @@ export class ITAssetApi {
   rejectCheckoutRequest(id: number) {
     return this.http.patch<CheckoutRequest>(`${this.apiUrl}/checkout-requests/${id}/reject`, {});
   }
+
+  getMyCheckoutRequests(userId: number) {
+    return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests/my/${userId}`);
+  }
 }

@@ -85,4 +85,11 @@ public class ItAssetController : ControllerBase
     {
         return Ok(await _service.GetMyAssets(userId));
     }
+
+    [HttpGet("checkout-requests/my/{userId}")]
+public async Task<IActionResult> GetMyCheckoutRequests(int userId)
+{
+    var requests = await _service.GetMyCheckoutRequests(userId);
+    return Ok(requests);
+}
 }

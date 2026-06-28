@@ -1,1 +1,33 @@
-<p>my-requests works!</p>
+<h2>My Requests</h2>
+
+@if (requests.length > 0) {
+  <table>
+    <thead>
+      <tr>
+        <th>Request ID</th>
+        <th>Asset ID</th>
+        <th>Category</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Updated</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (request of requests; track request.id) {
+        <tr>
+          <td>{{ request.id }}</td>
+          <td>{{ request.requestedAssetId || 'N/A' }}</td>
+          <td>{{ request.assetCategory }}</td>
+          <td>{{ request.reason }}</td>
+          <td>{{ CheckoutRequestStatus[request.status] }}</td>
+          <td>{{ request.createdAt | date:'short':'UTC' }}</td>
+          <td>{{ request.updatedAt | date:'short':'UTC' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p>You have not submitted any checkout requests yet.</p>
+}

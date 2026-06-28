@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Asset, AssetCondition, AssetStatus } from '../models/it-asset.models';
 import { ITAssetApi } from '../services/it-asset-api';
@@ -15,7 +15,7 @@ export class Assets implements OnInit {
   AssetStatus = AssetStatus;
   AssetCondition = AssetCondition;
 
-  constructor(private api: ITAssetApi) {}
+  constructor(private api: ITAssetApi, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadAssets();
@@ -25,6 +25,7 @@ export class Assets implements OnInit {
     this.api.getAssets().subscribe({
       next: (assets) => {
         this.assets = assets;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Failed to load assets:', error);
