@@ -29,8 +29,7 @@
       <th>Assigned To User ID</th>
       <th>Created At</th>
       <th>Updated At</th>
-      <th>Is Archived</th>
-      <th>Action</th>
+      <th></th>
     </tr>
   </thead>
 
@@ -42,10 +41,9 @@
         <td>{{ asset.serialNumber }}</td>
         <td>{{ AssetStatus[asset.status] }}</td>
         <td>{{ AssetCondition[asset.condition] }}</td>
-        <td>{{ asset.assignedToUserId }}</td>
+        <td>{{ asset.assignedToUserId || 'Unassigned' }}</td>
         <td>{{ asset.createdAt | date: 'short' : 'UTC' }}</td>
         <td>{{ asset.updatedAt | date: 'short' : 'UTC' }}</td>
-        <td>{{ asset.isArchived }}</td>
         <td>
           <button type="button" (click)="openStatusDrawer(asset)">View Status</button>
         </td>

@@ -32,7 +32,7 @@ export class App {
       return [
         { label: 'Dashboard', route: '/dashboard' },
         { label: 'Review Requests', route: '/review-requests' },
-        { label: 'Asset Inventory', route: '/assets' },
+        { label: 'Asset Inventory', route: '/all-assets' },
         { label: 'Returns', route: '/returns' },
         { label: 'Reports', route: '/reports' },
       ];

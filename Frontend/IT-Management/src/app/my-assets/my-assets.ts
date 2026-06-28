@@ -32,55 +32,54 @@ export class MyAssets implements OnInit {
   constructor(
     private api: ITAssetApi,
     private authService: AuthService,
-  private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   viewMode: 'my-assets' | 'checkout' = 'my-assets';
 
-ngOnInit() {
-  this.route.queryParams.subscribe(params => {
-    const view = params['view'];
+  ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      const view = params['view'];
 
-    if (view === 'checkout') {
-      this.loadCheckAssets();
-    } else {
-      this.loadMyAssets();
-    }
-  });
-}
+      if (view === 'checkout') {
+        this.loadCheckAssets();
+      } else {
+        this.loadMyAssets();
+      }
+    });
+  }
 
-loadMyAssets() {
-  const userId = this.authService.getUserId();
+  loadMyAssets() {
+    const userId = this.authService.getUserId();
 
-  this.api.getAssets().subscribe({
-    next: (assets) => {
-      this.assets = assets.filter(asset => asset.assignedToUserId === userId);
-      this.viewMode = 'my-assets';
-      this.cdr.detectChanges();
-    },
-    error: (error) => {
-      console.error('Failed to load my assets:', error);
-    },
-  });
-}
+    this.api.getMyAssets(userId).subscribe({
+      next: (assets) => {
+        this.assets = assets;
+        this.viewMode = 'my-assets';
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Failed to load my assets:', error);
+      },
+    });
+  }
 
-loadCheckAssets() {
-  this.api.getAssets().subscribe({
-    next: (assets) => {
-      this.assets = assets.filter(asset =>
-        asset.status === AssetStatus.Available &&
-        asset.isArchived === false
-      );
+  loadCheckAssets() {
+    this.api.getAssets().subscribe({
+      next: (assets) => {
+        this.assets = assets.filter(
+          (asset) => asset.status === AssetStatus.Available && asset.isArchived === false,
+        );
 
-      this.viewMode = 'checkout';
-      this.cdr.detectChanges();
-    },
-    error: (error) => {
-      console.error('Failed to load requestable assets:', error);
-    },
-  });
-}
+        this.viewMode = 'checkout';
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Failed to load requestable assets:', error);
+      },
+    });
+  }
 
   openStatusDrawer(asset: Asset) {
     this.selectedAsset = asset;
@@ -117,6 +116,4 @@ loadCheckAssets() {
       },
     });
   }
-
-  
 }
