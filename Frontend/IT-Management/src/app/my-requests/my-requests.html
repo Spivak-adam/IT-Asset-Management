@@ -1,11 +1,16 @@
-<h2>My Requests</h2>
+<div class="page-header">
+  <div>
+    <h2>My Requests</h2>
+    <p>Track your checkout and return requests.</p>
+  </div>
+</div>
 
 @if (requests.length > 0) {
   <table>
     <thead>
       <tr>
         <th>Request ID</th>
-        <th>Asset ID</th>
+        <th>Assigned Asset</th>
         <th>Category</th>
         <th>Reason</th>
         <th>Status</th>
@@ -17,17 +22,24 @@
     <tbody>
       @for (request of requests; track request.id) {
         <tr>
-          <td>{{ request.id }}</td>
-          <td>{{ request.requestedAssetId || 'N/A' }}</td>
+          <td>#{{ request.id }}</td>
+          <td>{{ request.assignedAssetId || 'Not assigned yet' }}</td>
           <td>{{ request.assetCategory }}</td>
           <td>{{ request.reason }}</td>
-          <td>{{ CheckoutRequestStatus[request.status] }}</td>
-          <td>{{ request.createdAt | date:'short':'UTC' }}</td>
-          <td>{{ request.updatedAt | date:'short':'UTC' }}</td>
+          <td>
+            <span class="status-badge">
+              {{ CheckoutRequestStatus[request.status] }}
+            </span>
+          </td>
+          <td>{{ request.createdAt | date: 'short' : 'UTC' }}</td>
+          <td>{{ request.updatedAt | date: 'short' : 'UTC' }}</td>
         </tr>
       }
     </tbody>
   </table>
 } @else {
-  <p>You have not submitted any checkout requests yet.</p>
+  <div class="empty-state">
+    <h3>No requests yet</h3>
+    <p>You have not submitted any checkout requests.</p>
+  </div>
 }
