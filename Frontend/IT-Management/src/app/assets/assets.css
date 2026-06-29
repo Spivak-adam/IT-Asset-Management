@@ -1,25 +1,108 @@
 h2 {
   margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #1f2937;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-th,
-td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+thead {
+  background: #1e3a8a;
 }
 
 th {
-  background: #0d2091;
   color: white;
+  font-weight: 600;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+tbody tr {
+  transition: background-color 0.15s ease;
 }
 
 tbody tr:hover {
-  background: #f5f7ff;
+  background: #f8fafc;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+select {
+  width: 100%;
+  min-width: 220px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.9rem;
+}
+
+button {
+  padding: 8px 14px;
+  margin-right: 6px;
+  margin-bottom: 4px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+button:first-child {
+  background: #2563eb;
+  color: white;
+}
+
+button:first-child:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+button:nth-child(2) {
+  background: #059669;
+  color: white;
+}
+
+button:nth-child(2):hover:not(:disabled) {
+  background: #047857;
+}
+
+button:last-child {
+  background: #dc2626;
+  color: white;
+}
+
+button:last-child:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+button:disabled {
+  background: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1200px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }

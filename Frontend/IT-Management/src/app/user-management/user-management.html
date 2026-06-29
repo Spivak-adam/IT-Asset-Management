@@ -1,4 +1,9 @@
-<h2>User Management</h2>
+<div class="page-header">
+  <div>
+    <h2>User Management</h2>
+    <p>Manage employee accounts, roles, and account status.</p>
+  </div>
+</div>
 
 <table>
   <thead>
@@ -6,10 +11,10 @@
       <th>Name</th>
       <th>Email</th>
       <th>Role</th>
-      <th>Active</th>
+      <th>Status</th>
       <th>Created</th>
-      <th>Change Role</th>
-      <th>Actions</th>
+      <th>Role</th>
+      <th>Account</th>
     </tr>
   </thead>
 
@@ -17,9 +22,21 @@
     @for (user of users; track user.id) {
       <tr>
         <td>{{ user.FirstName }} {{ user.LastName }}</td>
+
         <td>{{ user.email }}</td>
+
         <td>{{ UserRole[user.role] }}</td>
-        <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
+
+        <td>
+          <span
+            class="status-badge"
+            [class.active]="user.isActive"
+            [class.inactive]="!user.isActive"
+          >
+            {{ user.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+
         <td>{{ user.createdAt | date:'short':'UTC' }}</td>
 
         <td>
@@ -34,8 +51,13 @@
         </td>
 
         <td>
-          <button type="button" (click)="toggleUserActive(user)">
-            {{ user.isActive ? 'Deactivate' : 'Reactivate' }}
+          <button
+            [class.deactivate]="user.isActive"
+            [class.activate]="!user.isActive"
+            type="button"
+            (click)="toggleUserActive(user)"
+          >
+            {{ user.isActive ? 'Deactivate' : 'Activate' }}
           </button>
         </td>
       </tr>

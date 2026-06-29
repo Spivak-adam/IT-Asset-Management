@@ -1,12 +1,17 @@
-<h2>Review Requests</h2>
+<div class="page-header">
+  <div>
+    <h2>Review Requests</h2>
+    <p>Review employee checkout requests and assign available assets.</p>
+  </div>
+</div>
 
 @if (pendingRequests.length > 0) {
   <table>
     <thead>
       <tr>
-        <th>ID</th>
-        <th>User ID</th>
-        <th>Category Requested</th>
+        <th>Request</th>
+        <th>Employee</th>
+        <th>Category</th>
         <th>Reason</th>
         <th>Status</th>
         <th>Created</th>
@@ -18,12 +23,18 @@
     <tbody>
       @for (request of pendingRequests; track request.id) {
         <tr>
-          <td>{{ request.id }}</td>
+          <td>#{{ request.id }}</td>
           <td>{{ request.requestedByUserId }}</td>
           <td>{{ request.assetCategory }}</td>
           <td>{{ request.reason }}</td>
-          <td>{{ CheckoutRequestStatus[request.status] }}</td>
-          <td>{{ request.createdAt | date:'short':'UTC' }}</td>
+
+          <td>
+            <span class="status-badge">
+              {{ CheckoutRequestStatus[request.status] }}
+            </span>
+          </td>
+
+          <td>{{ request.createdAt | date: 'short' : 'UTC' }}</td>
 
           <td>
             @if ((assetsByRequest[request.id] ?? []).length > 0) {
@@ -35,12 +46,15 @@
                 }
               </select>
             } @else {
-              <span>No available {{ request.assetCategory }} assets</span>
+              <span class="muted-text">
+                No available {{ request.assetCategory }} assets
+              </span>
             }
           </td>
 
-          <td>
+          <td class="actions-cell">
             <button
+              class="approve-button"
               type="button"
               [disabled]="!selectedAssetIds[request.id]"
               (click)="approveRequest(request.id, selectedAssetIds[request.id])"
@@ -48,7 +62,11 @@
               Approve
             </button>
 
-            <button type="button" (click)="rejectRequest(request.id)">
+            <button
+              class="reject-button"
+              type="button"
+              (click)="rejectRequest(request.id)"
+            >
               Reject
             </button>
           </td>
@@ -57,5 +75,8 @@
     </tbody>
   </table>
 } @else {
-  <p>No pending requests.</p>
+  <div class="empty-state">
+    <h3>No Pending Requests</h3>
+    <p>There are currently no checkout requests awaiting review.</p>
+  </div>
 }
