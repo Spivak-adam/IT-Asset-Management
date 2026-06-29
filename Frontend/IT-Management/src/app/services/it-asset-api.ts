@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Asset, AssetHistory, CheckoutRequest } from '../models/it-asset.models';
+import { Asset, AssetHistory, CheckoutRequest, User, UserRole } from '../models/it-asset.models';
 
 export interface CreateCheckoutRequestDto {
   requestedByUserId: number;
@@ -58,10 +58,48 @@ export class ITAssetApi {
     return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests/my/${userId}`);
   }
 
-  returnAsset(requestId: number) {
+  requestReturn(requestId: number) {
+    return this.http.patch<CheckoutRequest>(
+      `${this.apiUrl}/checkout-requests/${requestId}/request-return`,
+      {},
+    );
+  }
+  
+  requestReturnByAsset(assetId: number, userId: number) {
   return this.http.patch<CheckoutRequest>(
-    `${this.apiUrl}/checkout-requests/${requestId}/return`,
+    `${this.apiUrl}/assets/${assetId}/request-return/${userId}`,
     {}
   );
 }
+
+  returnAsset(requestId: number) {
+    return this.http.patch<CheckoutRequest>(
+      `${this.apiUrl}/checkout-requests/${requestId}/return`,
+      {},
+    );
+  }
+
+  archiveAsset(id: number) {
+    return this.http.patch<Asset>(`${this.apiUrl}/assets/${id}/archive`, {});
+  }
+
+  assignAsset(id: number, userId: number) {
+    return this.http.patch<Asset>(`${this.apiUrl}/assets/${id}/assign`, { userId });
+  }
+
+  returnAssetFromAdmin(id: number) {
+    return this.http.patch<Asset>(`${this.apiUrl}/assets/${id}/return`, {});
+  }
+
+  getUsers() {
+    return this.http.get<User[]>(`${this.apiUrl}/users`);
+  }
+
+  updateUserRole(id: number, role: UserRole) {
+    return this.http.patch<User>(`${this.apiUrl}/users/${id}/role`, { role });
+  }
+
+  updateUserActive(id: number, isActive: boolean) {
+    return this.http.patch<User>(`${this.apiUrl}/users/${id}/active`, { isActive });
+  }
 }

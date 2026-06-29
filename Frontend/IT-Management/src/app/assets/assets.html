@@ -1,4 +1,4 @@
-<h2>Asset Inventory</h2>
+<h2>Asset Management</h2>
 
 <table>
   <thead>
@@ -9,8 +9,9 @@
       <th>Status</th>
       <th>Condition</th>
       <th>Assigned User</th>
-      <th>Updated</th>
       <th>Archived</th>
+      <th>Assign To</th>
+      <th>Actions</th>
     </tr>
   </thead>
 
@@ -22,9 +23,46 @@
         <td>{{ asset.category }}</td>
         <td>{{ AssetStatus[asset.status] }}</td>
         <td>{{ AssetCondition[asset.condition] }}</td>
-        <td>{{ asset.assignedToUser?.FirstName ?? 'Unassigned' }}</td>
-        <td>{{ asset.updatedAt | date:'short':'UTC' }}</td>
+        <td>{{ asset.assignedToUserId || 'Unassigned' }}</td>
         <td>{{ asset.isArchived ? 'Yes' : 'No' }}</td>
+
+        <td>
+          <select [(ngModel)]="selectedUserIds[asset.id]">
+            <option [ngValue]="null">Select user</option>
+
+            @for (user of users; track user.id) {
+              <option [ngValue]="user.id">
+                {{ user.FirstName }} {{ user.LastName }} - {{ user.email }}
+              </option>
+            }
+          </select>
+        </td>
+
+        <td>
+          <button
+            type="button"
+            (click)="assignAsset(asset.id)"
+            [disabled]="asset.isArchived"
+          >
+            Assign
+          </button>
+
+          <button
+            type="button"
+            (click)="returnAsset(asset.id)"
+            [disabled]="asset.status !== AssetStatus.Assigned"
+          >
+            Return
+          </button>
+
+          <button
+            type="button"
+            (click)="archiveAsset(asset.id)"
+            [disabled]="asset.isArchived"
+          >
+            Archive
+          </button>
+        </td>
       </tr>
     }
   </tbody>

@@ -17,12 +17,12 @@ public class ItAssetController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("auth/register")]
+    /*[HttpPost("auth/register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto request)
     {
         await _service.Register(request);
         return Ok("User registered successfully.");
-    }
+    }*/
 
     [HttpPost("auth/login")]
     public async Task<IActionResult> Login([FromBody] LoginDto request)
@@ -111,6 +111,57 @@ public class ItAssetController : ControllerBase
     {
         var response = await _service.ReturnAsset(id);
         return Ok(response);
+    }
+
+    [HttpPatch("assets/{id}/archive")]
+    public async Task<IActionResult> ArchiveAsset(int id)
+    {
+        return Ok(await _service.ArchiveAsset(id));
+    }
+
+    [HttpPatch("assets/{id}/assign")]
+    public async Task<IActionResult> AssignAsset(int id, [FromBody] AssignAssetDto request)
+    {
+        return Ok(await _service.AssignAsset(id, request.UserId));
+    }
+
+    [HttpPatch("assets/{id}/return")]
+    public async Task<IActionResult> ReturnAssetFromAdmin(int id)
+    {
+        return Ok(await _service.ReturnAssetFromAdmin(id));
+    }
+
+    [HttpPatch("checkout-requests/{id}/request-return")]
+    public async Task<IActionResult> RequestReturn(int id)
+    {
+        return Ok(await _service.RequestReturn(id));
+    }
+
+    [HttpPatch("assets/{assetId}/request-return/{userId}")]
+    public async Task<IActionResult> RequestReturnByAsset(int assetId, int userId)
+    {
+        return Ok(await _service.RequestReturnByAsset(assetId, userId));
+    }
+
+    [HttpGet("users")]
+    public async Task<IActionResult> GetUsers()
+    {
+        var users = await _service.GetUsers();
+        return Ok(users);
+    }
+
+    [HttpPatch("users/{id}/role")]
+    public async Task<IActionResult> UpdateUserRole(int id, [FromBody] UpdateUserRoleDto request)
+    {
+        var user = await _service.UpdateUserRole(id, request.Role);
+        return Ok(user);
+    }
+
+    [HttpPatch("users/{id}/active")]
+    public async Task<IActionResult> UpdateUserActive(int id, [FromBody] UpdateUserActiveDto request)
+    {
+        var user = await _service.UpdateUserActive(id, request.IsActive);
+        return Ok(user);
     }
 
 }

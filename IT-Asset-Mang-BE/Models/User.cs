@@ -19,6 +19,4 @@ public class User
     public bool IsActive { get; set; }
 
     public DateTime CreatedAt { get; set; }
-
-    public ICollection<CheckoutRequest> CheckoutRequests { get; set; } = [];
 }

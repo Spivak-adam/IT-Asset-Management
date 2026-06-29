@@ -24,11 +24,9 @@
           <td>{{ request.assignedAssetId }}</td>
           <td>{{ request.assetCategory }}</td>
           <td>{{ CheckoutRequestStatus[request.status] }}</td>
-          <td>{{ request.approvedAt | date:'short':'UTC' }}</td>
+          <td>{{ request.approvedAt | date: 'short' : 'UTC' }}</td>
           <td>
-            <button type="button" (click)="returnAsset(request.id)">
-              Mark Returned
-            </button>
+            <button type="button" (click)="approveReturn(request.id)">Approve Return</button>
           </td>
         </tr>
       }

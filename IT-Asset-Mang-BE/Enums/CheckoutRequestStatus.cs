@@ -7,6 +7,7 @@ public enum CheckoutRequestStatus
     Rejected = 3,
     Fulfilled = 4,
     Cancelled = 5,
-    Returned = 6
+    Returned = 6,
+    ReturnRequested = 7
     
 }

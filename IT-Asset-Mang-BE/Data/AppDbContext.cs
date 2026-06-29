@@ -20,12 +20,6 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<CheckoutRequest>()
-            .HasOne(cr => cr.RequestedByUser)
-            .WithMany(u => u.CheckoutRequests)
-            .HasForeignKey(cr => cr.RequestedByUserId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<CheckoutRequest>()
             .HasOne(cr => cr.ReviewedByUser)
             .WithMany()
             .HasForeignKey(cr => cr.ReviewedByUserId)
