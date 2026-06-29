@@ -47,12 +47,10 @@ export class App {
         {
           label: 'My Assets',
           route: '/my-assets',
-          queryParams: { view: 'my-assets' },
         },
         {
           label: 'Checkout Assets',
-          route: '/my-assets',
-          queryParams: { view: 'checkout' },
+          route: '/checkout',
         },
         {
           label: 'My Requests',

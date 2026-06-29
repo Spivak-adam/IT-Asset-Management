@@ -22,7 +22,7 @@
         <td>{{ asset.category }}</td>
         <td>{{ AssetStatus[asset.status] }}</td>
         <td>{{ AssetCondition[asset.condition] }}</td>
-        <td>{{ asset.assignedToUserId ?? 'Unassigned' }}</td>
+        <td>{{ asset.assignedToUser?.FirstName ?? 'Unassigned' }}</td>
         <td>{{ asset.updatedAt | date:'short':'UTC' }}</td>
         <td>{{ asset.isArchived ? 'Yes' : 'No' }}</td>
       </tr>

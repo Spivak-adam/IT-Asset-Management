@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectorRef} from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Asset } from '../models/it-asset.models';
 import { ITAssetApi, CreateCheckoutRequestDto } from '../services/it-asset-api';
@@ -11,8 +11,9 @@ import { AuthService } from '../services/auth';
   styleUrl: './checkout.css',
 })
 export class Checkout {
-  @Input() selectedAsset: Asset | null = null;
+  categories = ['Laptop', 'Monitor', 'Phone', 'Security Key'];
 
+  selectedCategory = '';
   requestReason = '';
   successMessage = '';
   errorMessage = '';
@@ -23,21 +24,24 @@ export class Checkout {
     private cdr: ChangeDetectorRef
   ) {}
 
-  Checkout() {
-    if (!this.selectedAsset) return;
+  requestCheckout() {
+    if (!this.selectedCategory) {
+      this.errorMessage = 'Please select an asset category.';
+      return;
+    }
 
     const request: CreateCheckoutRequestDto = {
       requestedByUserId: this.authService.getUserId(),
-      requestedAssetId: this.selectedAsset.id,
-      assetCategory: this.selectedAsset.category,
+      assetCategory: this.selectedCategory,
       reason: this.requestReason,
     };
 
     this.api.createCheckoutRequest(request).subscribe({
       next: () => {
-        this.successMessage = 'Checkout request submitted successfully.';
+        this.successMessage = `Checkout request submitted for ${this.selectedCategory}.`;
         this.errorMessage = '';
         this.requestReason = '';
+        this.selectedCategory = '';
         this.cdr.detectChanges();
       },
       error: (error) => {

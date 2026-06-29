@@ -1,31 +1,32 @@
-<h3>Request Checkout</h3>
+<h2>Checkout Asset</h2>
 
-@if (selectedAsset) {
-  <p>
-    Requesting:
-    <strong>{{ selectedAsset.name }}</strong>
-  </p>
+<label for="category">Asset Category</label>
 
-  <label for="reason">Reason</label>
+<select id="category" name="category" [(ngModel)]="selectedCategory">
+  <option value="">Select a category</option>
 
-  <textarea
-    id="reason"
-    name="reason"
-    [(ngModel)]="requestReason"
-    placeholder="Why do you need this asset?"
-  ></textarea>
-
-  <button type="button" (click)="Checkout()">
-    Request Checkout
-  </button>
-
-  @if (successMessage) {
-    <p class="success">{{ successMessage }}</p>
+  @for (category of categories; track category) {
+    <option [value]="category">
+      {{ category }}
+    </option>
   }
+</select>
 
-  @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
-  }
-} @else {
-  <p>No asset selected.</p>
+<label for="reason">Reason</label>
+
+<textarea
+  id="reason"
+  name="reason"
+  [(ngModel)]="requestReason"
+  placeholder="Why do you need this type of asset?"
+></textarea>
+
+<button type="button" (click)="requestCheckout()">Submit Request</button>
+
+@if (successMessage) {
+  <p class="success">{{ successMessage }}</p>
+}
+
+@if (errorMessage) {
+  <p class="error">{{ errorMessage }}</p>
 }

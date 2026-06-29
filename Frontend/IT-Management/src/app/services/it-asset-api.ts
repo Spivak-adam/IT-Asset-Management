@@ -4,7 +4,6 @@ import { Asset, AssetHistory, CheckoutRequest } from '../models/it-asset.models'
 
 export interface CreateCheckoutRequestDto {
   requestedByUserId: number;
-  requestedAssetId: number;
   assetCategory: string;
   reason: string;
 }
@@ -29,6 +28,10 @@ export class ITAssetApi {
     return this.http.get<AssetHistory[]>(`${this.apiUrl}/assets/${assetId}/history`);
   }
 
+  getAvailableAssetsByCategory(category: string) {
+    return this.http.get<Asset[]>(`${this.apiUrl}/assets/available/${category}`);
+  }
+
   createCheckoutRequest(request: CreateCheckoutRequestDto) {
     return this.http.post<CheckoutRequest>(`${this.apiUrl}/checkout-requests`, request);
   }
@@ -37,12 +40,18 @@ export class ITAssetApi {
     return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests`);
   }
 
-  approveCheckoutRequest(id: number) {
-    return this.http.patch<CheckoutRequest>(`${this.apiUrl}/checkout-requests/${id}/approve`, {});
+  approveCheckoutRequest(id: number, reviewedByUserId: number, assignedAssetId: number) {
+    return this.http.patch<CheckoutRequest>(`${this.apiUrl}/checkout-requests/${id}/approve`, {
+      reviewedByUserId: reviewedByUserId,
+      assignedAssetId,
+    });
   }
 
-  rejectCheckoutRequest(id: number) {
-    return this.http.patch<CheckoutRequest>(`${this.apiUrl}/checkout-requests/${id}/reject`, {});
+  rejectCheckoutRequest(id: number, reviewedByUserId: number) {
+    return this.http.patch<CheckoutRequest>(
+      `${this.apiUrl}/checkout-requests/${id}/reject/${reviewedByUserId}`,
+      {},
+    );
   }
 
   getMyCheckoutRequests(userId: number) {
