@@ -52,17 +52,23 @@ public class ItAssetController : ControllerBase
     }
 
     [HttpPatch("checkout-requests/{id}/approve")]
-    public async Task<IActionResult> ApproveCheckoutRequest(int id)
+    public async Task<IActionResult> ApproveCheckoutRequest(
+    int id,
+    [FromBody] ApproveCheckoutRequestDto request)
     {
-        var response = await _service.ApproveCheckoutRequest(id);
+        var response = await _service.ApproveCheckoutRequest(
+            id,
+            request.ReviewedByUserId,
+            request.AssignedAssetId
+        );
+
         return Ok(response);
     }
 
-    [HttpPatch("checkout-requests/{id}/reject")]
-    public async Task<IActionResult> RejectCheckoutRequest(int id)
+    [HttpPatch("checkout-requests/{id}/reject/{reviewedByUserId}")]
+    public async Task<IActionResult> RejectCheckoutRequest(int id, int reviewedByUserId)
     {
-        var response = await _service.RejectCheckoutRequest(id);
-        return Ok(response);
+        return Ok(await _service.RejectCheckoutRequest(id, reviewedByUserId));
     }
 
     [HttpGet("assets/{assetId}/history")]
@@ -86,10 +92,17 @@ public class ItAssetController : ControllerBase
         return Ok(await _service.GetMyAssets(userId));
     }
 
+    [HttpGet("assets/available/{category}")]
+    public async Task<IActionResult> GetAvailableAssetsByCategory(string category)
+    {
+        var assets = await _service.GetAvailableAssetsByCategory(category);
+        return Ok(assets);
+    }
+
     [HttpGet("checkout-requests/my/{userId}")]
-public async Task<IActionResult> GetMyCheckoutRequests(int userId)
-{
-    var requests = await _service.GetMyCheckoutRequests(userId);
-    return Ok(requests);
-}
+    public async Task<IActionResult> GetMyCheckoutRequests(int userId)
+    {
+        var requests = await _service.GetMyCheckoutRequests(userId);
+        return Ok(requests);
+    }
 }

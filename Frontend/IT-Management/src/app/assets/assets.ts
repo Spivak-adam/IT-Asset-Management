@@ -26,6 +26,7 @@ export class Assets implements OnInit {
       next: (assets) => {
         this.assets = assets;
         this.cdr.detectChanges();
+        console.log('Assets loaded:', assets);
       },
       error: (error) => {
         console.error('Failed to load assets:', error);

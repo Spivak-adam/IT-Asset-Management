@@ -5,6 +5,7 @@ import { MyAssets } from './my-assets/my-assets';
 import { ReviewRequests } from './review-requests/review-requests';
 import { Assets } from './assets/assets'
 import { MyRequests } from './my-requests/my-requests'
+import { Checkout } from './checkout/checkout';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -12,7 +13,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: Dashboard },
 
   { path: 'my-assets', component: MyAssets },
-  { path: 'checkout-assets', component: MyAssets },
+  { path: 'checkout', component: Checkout },
   { path: 'my-requests', component: MyRequests },
 
   { path: 'assets', component: MyAssets },

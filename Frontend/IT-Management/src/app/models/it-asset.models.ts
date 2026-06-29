@@ -32,6 +32,8 @@ export enum CheckoutRequestStatus {
 export interface User {
   id: number;
   email: string;
+  FirstName: string;
+  LastName: string;
   passwordHash?: string;
   role: UserRole;
   isActive: boolean;
@@ -47,6 +49,7 @@ export interface Asset {
   status: AssetStatus;
   condition: AssetCondition;
   assignedToUserId?: number | null;
+  assignedToUser?: User | null;
   createdAt: string;
   updatedAt: string;
   isArchived: boolean;

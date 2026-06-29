@@ -6,11 +6,11 @@
       <tr>
         <th>ID</th>
         <th>User ID</th>
-        <th>Asset ID</th>
-        <th>Category</th>
+        <th>Category Requested</th>
         <th>Reason</th>
         <th>Status</th>
         <th>Created</th>
+        <th>Assign Asset</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -20,13 +20,31 @@
         <tr>
           <td>{{ request.id }}</td>
           <td>{{ request.requestedByUserId }}</td>
-          <td>{{ request.requestedAssetId || 'N/A' }}</td>
           <td>{{ request.assetCategory }}</td>
           <td>{{ request.reason }}</td>
           <td>{{ CheckoutRequestStatus[request.status] }}</td>
           <td>{{ request.createdAt | date:'short':'UTC' }}</td>
+
           <td>
-            <button type="button" (click)="approveRequest(request.id)">
+            @if ((assetsByRequest[request.id] ?? []).length > 0) {
+              <select [(ngModel)]="selectedAssetIds[request.id]">
+                @for (asset of assetsByRequest[request.id]; track asset.id) {
+                  <option [ngValue]="asset.id">
+                    {{ asset.assetTag }} - {{ asset.name }}
+                  </option>
+                }
+              </select>
+            } @else {
+              <span>No available {{ request.assetCategory }} assets</span>
+            }
+          </td>
+
+          <td>
+            <button
+              type="button"
+              [disabled]="!selectedAssetIds[request.id]"
+              (click)="approveRequest(request.id, selectedAssetIds[request.id])"
+            >
               Approve
             </button>
 

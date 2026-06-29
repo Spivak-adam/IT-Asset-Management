@@ -7,14 +7,7 @@
         @for (item of menuItems; track item.route) {
           <a
             [routerLink]="item.route"
-            [queryParams]="item.queryParams"
             routerLinkActive="active"
-            [routerLinkActiveOptions]="{
-              paths: 'exact',
-              queryParams: 'exact',
-              fragment: 'ignored',
-              matrixParams: 'ignored',
-            }"
           >
             {{ item.label }}
           </a>
