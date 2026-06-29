@@ -535,33 +535,33 @@ public class ItAssetService
     }
 
     public async Task<CheckoutRequestDto> RequestReturnByAsset(int assetId, int userId)
-{
-    var request = await _context.CheckoutRequests
-        .FirstOrDefaultAsync(r =>
-            r.AssignedAssetId == assetId &&
-            r.RequestedByUserId == userId &&
-            r.Status == CheckoutRequestStatus.Fulfilled);
-
-    if (request == null)
-        throw new Exception("No fulfilled checkout request found for this asset and user.");
-
-    var oldStatus = request.Status.ToString();
-
-    request.Status = CheckoutRequestStatus.ReturnRequested;
-    request.UpdatedAt = DateTime.UtcNow;
-
-    await _context.AssetHistory.AddAsync(new AssetHistory
     {
-        AssetId = assetId,
-        UserId = userId,
-        Action = "Return Requested",
-        OldValue = oldStatus,
-        NewValue = request.Status.ToString()
-    });
+        var request = await _context.CheckoutRequests
+            .FirstOrDefaultAsync(r =>
+                r.AssignedAssetId == assetId &&
+                r.RequestedByUserId == userId &&
+                r.Status == CheckoutRequestStatus.Fulfilled);
 
-    await _context.SaveChangesAsync();
+        if (request == null)
+            throw new Exception("No fulfilled checkout request found for this asset and user.");
 
-    return new CheckoutRequestDto
+        var oldStatus = request.Status.ToString();
+
+        request.Status = CheckoutRequestStatus.ReturnRequested;
+        request.UpdatedAt = DateTime.UtcNow;
+
+        await _context.AssetHistory.AddAsync(new AssetHistory
+        {
+            AssetId = assetId,
+            UserId = userId,
+            Action = "Return Requested",
+            OldValue = oldStatus,
+            NewValue = request.Status.ToString()
+        });
+
+        await _context.SaveChangesAsync();
+
+        return new CheckoutRequestDto
         {
             Id = request.Id,
             RequestedByUserId = request.RequestedByUserId,
@@ -578,7 +578,7 @@ public class ItAssetService
             CreatedAt = request.CreatedAt,
             UpdatedAt = request.UpdatedAt
         };
-}
+    }
 
     public async Task<AssetDto> ArchiveAsset(int id)
     {
@@ -758,4 +758,29 @@ public class ItAssetService
         };
     }
 
+    public async Task<AssetDto> RestoreAsset(int id)
+    {
+        var asset = await _context.Assets.FindAsync(id);
+
+        if (asset == null)
+            throw new Exception("Asset not found.");
+
+        var oldValue = asset.IsArchived.ToString();
+
+        asset.IsArchived = false;
+        asset.UpdatedAt = DateTime.UtcNow;
+
+        await _context.AssetHistory.AddAsync(new AssetHistory
+        {
+            AssetId = asset.Id,
+            UserId = null,
+            Action = "Asset Restored",
+            OldValue = oldValue,
+            NewValue = asset.IsArchived.ToString()
+        });
+
+        await _context.SaveChangesAsync();
+
+        return MapAssetDto(asset);
+    }
 }

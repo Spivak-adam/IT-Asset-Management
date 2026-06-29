@@ -15,24 +15,27 @@ export class Login {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   onLogin() {
     const loginDto: LoginDto = {
       email: this.email,
-      password: this.password
+      password: this.password,
     };
 
     this.authService.login(loginDto).subscribe({
       next: (response) => {
-        console.log('Login successful', response);
         this.authService.saveSession(response);
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        console.error('Login failed', error);
-      }
+        if (error.status === 401) {
+          this.router.navigate(['/unauthorized']);
+        } else {
+          console.error('Login failed', error);
+        }
+      },
     });
   }
 }

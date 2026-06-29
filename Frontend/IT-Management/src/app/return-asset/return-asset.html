@@ -29,7 +29,9 @@
 
           <td>
             <span class="status-badge">
-              {{ CheckoutRequestStatus[request.status] }}
+              {{ CheckoutRequestStatus[request.status] === 'ReturnRequested'
+                  ? 'Return Requested'
+                  : CheckoutRequestStatus[request.status] }}
             </span>
           </td>
 

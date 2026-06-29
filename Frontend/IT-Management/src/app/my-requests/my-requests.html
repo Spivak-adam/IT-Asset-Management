@@ -10,7 +10,7 @@
     <thead>
       <tr>
         <th>Request ID</th>
-        <th>Assigned Asset</th>
+        <th>Assigned Asset Id</th>
         <th>Category</th>
         <th>Reason</th>
         <th>Status</th>
@@ -28,7 +28,11 @@
           <td>{{ request.reason }}</td>
           <td>
             <span class="status-badge">
-              {{ CheckoutRequestStatus[request.status] }}
+              {{
+                CheckoutRequestStatus[request.status] === 'ReturnRequested'
+                  ? 'Return Requested'
+                  : CheckoutRequestStatus[request.status]
+              }}
             </span>
           </td>
           <td>{{ request.createdAt | date: 'short' : 'UTC' }}</td>

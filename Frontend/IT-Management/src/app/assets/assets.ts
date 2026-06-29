@@ -56,6 +56,13 @@ export class Assets implements OnInit {
     });
   }
 
+  restoreAsset(id: number) {
+  this.api.restoreAsset(id).subscribe({
+    next: () => this.loadAssets(),
+    error: error => console.error('Failed to restore asset:', error),
+  });
+}
+
   assignAsset(assetId: number) {
     const userId = this.selectedUserIds[assetId];
 

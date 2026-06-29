@@ -106,3 +106,21 @@ button:disabled {
     white-space: nowrap;
   }
 }
+
+.archive-button {
+  background: #dc2626;
+  color: white;
+}
+
+.archive-button:hover {
+  background: #b91c1c;
+}
+
+.restore-button {
+  background: #059669;
+  color: white;
+}
+
+.restore-button:hover {
+  background: #047857;
+}

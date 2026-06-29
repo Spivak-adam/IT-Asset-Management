@@ -83,6 +83,10 @@ export class ITAssetApi {
     return this.http.patch<Asset>(`${this.apiUrl}/assets/${id}/archive`, {});
   }
 
+  restoreAsset(id: number) {
+    return this.http.patch<Asset>(`${this.apiUrl}/assets/${id}/restore`, {});
+  }
+
   assignAsset(id: number, userId: number) {
     return this.http.patch<Asset>(`${this.apiUrl}/assets/${id}/assign`, { userId });
   }

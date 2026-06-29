@@ -27,14 +27,15 @@ public class ItAssetController : ControllerBase
     [HttpPost("auth/login")]
     public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
-        var response = await _service.Login(request.Email, request.Password);
-
-        if (response == null)
+        try
         {
-            return Unauthorized("Invalid email or password.");
+            var response = await _service.Login(request.Email, request.Password);
+            return Ok(response);
         }
-
-        return Ok(response);
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(new { message = ex.Message });
+        }
     }
 
     [HttpGet("checkout-requests")]
@@ -117,6 +118,12 @@ public class ItAssetController : ControllerBase
     public async Task<IActionResult> ArchiveAsset(int id)
     {
         return Ok(await _service.ArchiveAsset(id));
+    }
+
+    [HttpPatch("assets/{id}/restore")]
+    public async Task<IActionResult> RestoreAsset(int id)
+    {
+        return Ok(await _service.RestoreAsset(id));
     }
 
     [HttpPatch("assets/{id}/assign")]

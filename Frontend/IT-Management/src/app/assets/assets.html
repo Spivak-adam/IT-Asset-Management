@@ -39,11 +39,7 @@
         </td>
 
         <td>
-          <button
-            type="button"
-            (click)="assignAsset(asset.id)"
-            [disabled]="asset.isArchived"
-          >
+          <button type="button" (click)="assignAsset(asset.id)" [disabled]="asset.isArchived">
             Assign
           </button>
 
@@ -55,13 +51,15 @@
             Return
           </button>
 
-          <button
-            type="button"
-            (click)="archiveAsset(asset.id)"
-            [disabled]="asset.isArchived"
-          >
-            Archive
-          </button>
+          @if (!asset.isArchived) {
+            <button class="archive-button" type="button" (click)="archiveAsset(asset.id)">
+              Archive
+            </button>
+          } @else {
+            <button class="restore-button" type="button" (click)="restoreAsset(asset.id)">
+              Restore
+            </button>
+          }
         </td>
       </tr>
     }
