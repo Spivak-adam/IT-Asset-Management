@@ -39,3 +39,7 @@
   padding: 2rem;
   background: #f4f6fb;
 }
+
+.logged-in-user {
+  margin-bottom: 1rem;
+}

@@ -64,13 +64,13 @@ export class ITAssetApi {
       {},
     );
   }
-  
+
   requestReturnByAsset(assetId: number, userId: number) {
-  return this.http.patch<CheckoutRequest>(
-    `${this.apiUrl}/assets/${assetId}/request-return/${userId}`,
-    {}
-  );
-}
+    return this.http.patch<CheckoutRequest>(
+      `${this.apiUrl}/assets/${assetId}/request-return/${userId}`,
+      {},
+    );
+  }
 
   returnAsset(requestId: number) {
     return this.http.patch<CheckoutRequest>(

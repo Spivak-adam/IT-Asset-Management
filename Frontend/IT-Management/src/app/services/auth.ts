@@ -60,6 +60,11 @@ export class AuthService {
     return localStorage.getItem('role');
   }
 
+  getEmail(): string {
+    if (typeof window === 'undefined') return '';
+    return localStorage.getItem('email') ?? '';
+  }
+
   isLoggedIn(): boolean {
     return !!this.getToken();
   }

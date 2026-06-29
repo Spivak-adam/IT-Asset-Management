@@ -30,6 +30,12 @@ public class ItAssetController : ControllerBase
         try
         {
             var response = await _service.Login(request.Email, request.Password);
+
+            if (response == null)
+            {
+                return Unauthorized(new { message = "Invalid email or password." });
+            }
+
             return Ok(response);
         }
         catch (UnauthorizedAccessException ex)

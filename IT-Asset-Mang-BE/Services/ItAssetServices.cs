@@ -60,37 +60,37 @@ public class ItAssetService
     }*/
 
     public async Task<LoginResponseDto?> Login(string email, string password)
+{
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Email == email);
+
+    if (user == null)
     {
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == email);
-
-        if (user == null)
-        {
-            return null;
-        }
-
-        var validPassword = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
-
-        if (!validPassword)
-        {
-            return null;
-        }
-
-        var token = Guid.NewGuid().ToString();
-
-        return new LoginResponseDto
-        {
-            Id = user.Id,
-            Token = token,
-            Email = user.Email,
-            Role = user.Role.ToString()
-        };
+        return null;
     }
 
-    public async Task Logout()
-    {
+    var validPassword = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
 
+    if (!validPassword)
+    {
+        return null;
     }
+
+    if (!user.IsActive)
+    {
+        throw new UnauthorizedAccessException("Account is inactive.");
+    }
+
+    var token = Guid.NewGuid().ToString();
+
+    return new LoginResponseDto
+    {
+        Id = user.Id,
+        Token = token,
+        Email = user.Email,
+        Role = user.Role.ToString()
+    };
+}
 
     public async Task<List<AssetHistory>> GetAssetHistory(int assetId)
     {

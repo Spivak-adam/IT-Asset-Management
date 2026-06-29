@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth';
+import { User } from './models/it-asset.models';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,20 @@ import { AuthService } from './services/auth';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
+export class App implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
   ) {}
+  userEmail: string | null = null;
+
+  ngOnInit() {
+    this.getEmail();
+  }
+
+  getEmail() {
+    return this.authService.getEmail();
+  }
 
   get menuItems() {
     const role = this.authService.getRole();

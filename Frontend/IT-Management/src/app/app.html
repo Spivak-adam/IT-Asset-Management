@@ -3,12 +3,14 @@
     <aside class="sidebar">
       <h2>IT Assets</h2>
 
+      <div class="logged-in-user">
+        <div class="label">Signed in as</div>
+        <div class="email">{{ userEmail }}</div>
+      </div>
+
       <nav>
         @for (item of menuItems; track item.route) {
-          <a
-            [routerLink]="item.route"
-            routerLinkActive="active"
-          >
+          <a [routerLink]="item.route" routerLinkActive="active">
             {{ item.label }}
           </a>
         }

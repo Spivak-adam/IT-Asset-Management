@@ -37,16 +37,13 @@
           </span>
         </td>
 
-        <td>{{ user.createdAt | date:'short':'UTC' }}</td>
+        <td>{{ user.createdAt | date: 'short' : 'UTC' }}</td>
 
         <td>
-          <select
-            [ngModel]="user.role"
-            (ngModelChange)="updateUserRole(user.id, $event)"
-          >
-            <option [ngValue]="1">Admin</option>
+          <select [ngModel]="user.role" (ngModelChange)="updateUserRole(user.id, $event)">
+            <option [ngValue]="1">Employee</option>
             <option [ngValue]="2">Asset Manager</option>
-            <option [ngValue]="3">Employee</option>
+            <option [ngValue]="3">Admin</option>
           </select>
         </td>
 
