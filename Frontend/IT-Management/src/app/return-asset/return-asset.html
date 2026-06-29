@@ -1,0 +1,39 @@
+<h2>Returns</h2>
+
+<p>Mark assigned assets as returned.</p>
+
+@if (returnableRequests.length > 0) {
+  <table>
+    <thead>
+      <tr>
+        <th>Request ID</th>
+        <th>User ID</th>
+        <th>Assigned Asset ID</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Approved</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (request of returnableRequests; track request.id) {
+        <tr>
+          <td>{{ request.id }}</td>
+          <td>{{ request.requestedByUserId }}</td>
+          <td>{{ request.assignedAssetId }}</td>
+          <td>{{ request.assetCategory }}</td>
+          <td>{{ CheckoutRequestStatus[request.status] }}</td>
+          <td>{{ request.approvedAt | date:'short':'UTC' }}</td>
+          <td>
+            <button type="button" (click)="returnAsset(request.id)">
+              Mark Returned
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p>No assets currently need to be returned.</p>
+}

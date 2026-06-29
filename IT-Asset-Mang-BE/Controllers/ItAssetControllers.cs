@@ -105,4 +105,12 @@ public class ItAssetController : ControllerBase
         var requests = await _service.GetMyCheckoutRequests(userId);
         return Ok(requests);
     }
+
+    [HttpPatch("checkout-requests/{id}/return")]
+    public async Task<IActionResult> ReturnAsset(int id)
+    {
+        var response = await _service.ReturnAsset(id);
+        return Ok(response);
+    }
+
 }

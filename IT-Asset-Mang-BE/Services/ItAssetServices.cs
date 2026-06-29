@@ -389,4 +389,83 @@ public class ItAssetService
             })
             .ToListAsync();
     }
+
+    public async Task<CheckoutRequestDto> ReturnAsset(int id)
+{
+    var request = await _context.CheckoutRequests.FindAsync(id);
+
+    if (request == null)
+        throw new Exception("Checkout request not found.");
+
+    if (request.AssignedAssetId == null)
+        throw new Exception("No asset assigned to this request.");
+
+    if (request.Status != CheckoutRequestStatus.Fulfilled)
+        throw new Exception("Only fulfilled requests can be returned.");
+
+    var asset = await _context.Assets
+        .FirstOrDefaultAsync(a => a.Id == request.AssignedAssetId);
+
+    if (asset == null)
+        throw new Exception("Asset not found.");
+
+    var oldAssetStatus = asset.Status.ToString();
+    var oldAssignedUser = asset.AssignedToUserId?.ToString() ?? "Unassigned";
+    var oldRequestStatus = request.Status.ToString();
+
+    request.Status = CheckoutRequestStatus.Returned;
+    request.ReturnedAt = DateTime.UtcNow;
+    request.UpdatedAt = DateTime.UtcNow;
+
+    asset.Status = AssetStatus.Available;
+    asset.AssignedToUserId = null;
+    asset.UpdatedAt = DateTime.UtcNow;
+
+    await _context.AssetHistory.AddAsync(new AssetHistory
+    {
+        AssetId = asset.Id,
+        UserId = request.RequestedByUserId,
+        Action = "Asset Returned",
+        OldValue = oldAssignedUser,
+        NewValue = "Unassigned"
+    });
+
+    await _context.AssetHistory.AddAsync(new AssetHistory
+    {
+        AssetId = asset.Id,
+        UserId = request.RequestedByUserId,
+        Action = "Asset Status Updated",
+        OldValue = oldAssetStatus,
+        NewValue = asset.Status.ToString()
+    });
+
+    await _context.AssetHistory.AddAsync(new AssetHistory
+    {
+        AssetId = asset.Id,
+        UserId = request.RequestedByUserId,
+        Action = "Checkout Returned",
+        OldValue = oldRequestStatus,
+        NewValue = request.Status.ToString()
+    });
+
+    await _context.SaveChangesAsync();
+
+    return new CheckoutRequestDto
+        {
+            Id = request.Id,
+            RequestedByUserId = request.RequestedByUserId,
+            RequestedAssetId = request.RequestedAssetId,
+            AssetCategory = request.AssetCategory,
+            Reason = request.Reason,
+            Status = request.Status,
+            ReviewedByUserId = request.ReviewedByUserId,
+            AssignedAssetId = request.AssignedAssetId,
+            ApprovedAt = request.ApprovedAt,
+            RejectedAt = request.RejectedAt,
+            FulfilledAt = request.FulfilledAt,
+            ReturnedAt = request.ReturnedAt,
+            CreatedAt = request.CreatedAt,
+            UpdatedAt = request.UpdatedAt
+        };
+}
 }

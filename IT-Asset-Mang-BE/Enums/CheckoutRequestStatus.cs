@@ -8,4 +8,5 @@ public enum CheckoutRequestStatus
     Fulfilled = 4,
     Cancelled = 5,
     Returned = 6
+    
 }
