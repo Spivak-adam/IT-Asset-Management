@@ -36,16 +36,14 @@ export class ReturnAsset implements OnInit {
 
   get returnableRequests() {
     return this.requests.filter(
-      request => request.status === CheckoutRequestStatus.Fulfilled
+      request => request.status === CheckoutRequestStatus.ReturnRequested
     );
   }
 
-  returnAsset(requestId: number) {
-    this.api.returnAsset(requestId).subscribe({
-      next: () => this.loadRequests(),
-      error: (error) => {
-        console.error('Failed to return asset:', error);
-      },
-    });
-  }
+  approveReturn(requestId: number) {
+  this.api.returnAsset(requestId).subscribe({
+    next: () => this.loadRequests(),
+    error: error => console.error('Failed to approve return:', error)
+  });
+}
 }

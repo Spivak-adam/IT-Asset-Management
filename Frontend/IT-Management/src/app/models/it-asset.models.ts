@@ -27,6 +27,7 @@ export enum CheckoutRequestStatus {
   Fulfilled = 4,
   Cancelled = 5,
   Returned = 6,
+  ReturnRequested = 7,
 }
 
 export interface User {
@@ -34,7 +35,6 @@ export interface User {
   email: string;
   FirstName: string;
   LastName: string;
-  passwordHash?: string;
   role: UserRole;
   isActive: boolean;
   createdAt: string;

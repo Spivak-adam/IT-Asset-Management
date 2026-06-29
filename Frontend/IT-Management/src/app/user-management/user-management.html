@@ -1,1 +1,44 @@
-<p>user-management works!</p>
+<h2>User Management</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Active</th>
+      <th>Created</th>
+      <th>Change Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (user of users; track user.id) {
+      <tr>
+        <td>{{ user.FirstName }} {{ user.LastName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ UserRole[user.role] }}</td>
+        <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
+        <td>{{ user.createdAt | date:'short':'UTC' }}</td>
+
+        <td>
+          <select
+            [ngModel]="user.role"
+            (ngModelChange)="updateUserRole(user.id, $event)"
+          >
+            <option [ngValue]="1">Admin</option>
+            <option [ngValue]="2">Asset Manager</option>
+            <option [ngValue]="3">Employee</option>
+          </select>
+        </td>
+
+        <td>
+          <button type="button" (click)="toggleUserActive(user)">
+            {{ user.isActive ? 'Deactivate' : 'Reactivate' }}
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

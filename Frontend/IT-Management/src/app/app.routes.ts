@@ -7,6 +7,7 @@ import { Assets } from './assets/assets'
 import { MyRequests } from './my-requests/my-requests'
 import { Checkout } from './checkout/checkout';
 import { ReturnAsset } from './return-asset/return-asset';
+import { UserManagement } from './user-management/user-management'
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,7 +21,7 @@ export const routes: Routes = [
   { path: 'assets', component: MyAssets },
   { path: 'review-requests', component: ReviewRequests },
   { path: 'all-assets', component: Assets },
-  //{ path: 'users', component: UserManagement },
+  { path: 'users', component: UserManagement },
   { path: 'returns', component: ReturnAsset },
   //{ path: 'reports', component: Dashboard },
 ];

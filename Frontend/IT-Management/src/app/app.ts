@@ -21,10 +21,10 @@ export class App {
     if (role === 'Admin') {
       return [
         { label: 'Dashboard', route: '/dashboard' },
-        { label: 'Asset Management', route: '/assets' },
+        { label: 'Asset Management', route: '/all-assets' },
         { label: 'Review Requests', route: '/review-requests' },
         { label: 'User Management', route: '/users' },
-        { label: 'Reports', route: '/reports' },
+        { label: 'Returns', route: '/returns' },
       ];
     }
 
@@ -34,7 +34,6 @@ export class App {
         { label: 'Review Requests', route: '/review-requests' },
         { label: 'Asset Inventory', route: '/all-assets' },
         { label: 'Returns', route: '/returns' },
-        { label: 'Reports', route: '/reports' },
       ];
     }
 

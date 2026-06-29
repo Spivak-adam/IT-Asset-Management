@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-assets',
-  imports: [CommonModule, FormsModule, Checkout],
+  imports: [CommonModule, FormsModule],
   templateUrl: './my-assets.html',
   styleUrl: './my-assets.css',
 })
@@ -36,18 +36,8 @@ export class MyAssets implements OnInit {
     private cdr: ChangeDetectorRef,
   ) {}
 
-  viewMode: 'my-assets' | 'checkout' = 'my-assets';
-
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      const view = params['view'];
-
-      if (view === 'checkout') {
-        this.loadCheckAssets();
-      } else {
-        this.loadMyAssets();
-      }
-    });
+    this.loadMyAssets();
   }
 
   loadMyAssets() {
@@ -56,7 +46,6 @@ export class MyAssets implements OnInit {
     this.api.getMyAssets(userId).subscribe({
       next: (assets) => {
         this.assets = assets;
-        this.viewMode = 'my-assets';
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -65,19 +54,15 @@ export class MyAssets implements OnInit {
     });
   }
 
-  loadCheckAssets() {
-    this.api.getAssets().subscribe({
-      next: (assets) => {
-        this.assets = assets.filter(
-          (asset) => asset.status === AssetStatus.Available && asset.isArchived === false,
-        );
+  requestReturn(assetId: number) {
+    const userId = this.authService.getUserId();
 
-        this.viewMode = 'checkout';
-        this.cdr.detectChanges();
+    this.api.requestReturnByAsset(assetId, userId).subscribe({
+      next: () => {
+        this.closeDrawer();
+        this.loadMyAssets();
       },
-      error: (error) => {
-        console.error('Failed to load requestable assets:', error);
-      },
+      error: (error) => console.error('Failed to request return:', error),
     });
   }
 

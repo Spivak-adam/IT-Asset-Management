@@ -1,20 +1,8 @@
 <div class="page-header">
   <div>
-    <h2>
-      @if (viewMode === 'my-assets') {
-        My Assets
-      } @else {
-        Checkout Assets
-      }
-    </h2>
+    <h2>My Assets</h2>
 
-    <p>
-      @if (viewMode === 'my-assets') {
-        These are the assets currently assigned to you.
-      } @else {
-        These are available assets you can request for checkout.
-      }
-    </p>
+    <p>These are the assets currently assigned to you.</p>
   </div>
 </div>
 
@@ -73,7 +61,10 @@
       <p>{{ assetHistory.length }} history records.</p>
 
       <button type="button" (click)="openHistoryPopup()">View Full History</button>
-      
+
+      <hr />
+
+      <button type="button" (click)="requestReturn(selectedAsset.id)">Request Return</button>
     }
   </aside>
 }
