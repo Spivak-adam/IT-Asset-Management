@@ -57,4 +57,11 @@ export class ITAssetApi {
   getMyCheckoutRequests(userId: number) {
     return this.http.get<CheckoutRequest[]>(`${this.apiUrl}/checkout-requests/my/${userId}`);
   }
+
+  returnAsset(requestId: number) {
+  return this.http.patch<CheckoutRequest>(
+    `${this.apiUrl}/checkout-requests/${requestId}/return`,
+    {}
+  );
+}
 }
