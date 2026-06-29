@@ -618,6 +618,7 @@ The core application is functionally complete. Remaining polish items:
    - Reorganize `ItAssetController.cs` endpoints by feature area
    - Move repeated DTO mapping into helper methods
    - Reduce duplicated response logic
+5. Display email in side navigation bar to show which account is logged in.
 
 ---
 
